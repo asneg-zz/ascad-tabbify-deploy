@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "bodies": [
+    {
+      "id": "bdf821e5-d1d6-4e3a-894f-786a3b1bfea7",
+      "name": "Кубик",
+      "visible": true,
+      "features": [
+        {
+          "id": "604b38b7-a421-4685-b7e9-d8affd6f88c2",
+          "type": "base_primitive",
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "primitive": {
+            "type": "cube",
+            "width": 20.0,
+            "height": 20.0,
+            "depth": 20.0
+          }
+        }
+      ]
+    }
+  ],
+  "body_operations": []
+}

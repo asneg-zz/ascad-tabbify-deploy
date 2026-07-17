@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="ASCAD">
+  <!-- Gear frame -->
+  <path d="M 44.38 11.44 L 51.30 9.04 L 54.96 12.70 L 52.56 19.62 L 55.29 26.21 L 61.89 29.41 L 61.89 34.59 L 55.29 37.79 L 52.56 44.38 L 54.96 51.30 L 51.30 54.96 L 44.38 52.56 L 37.79 55.29 L 34.59 61.89 L 29.41 61.89 L 26.21 55.29 L 19.62 52.56 L 12.70 54.96 L 9.04 51.30 L 11.44 44.38 L 8.71 37.79 L 2.11 34.59 L 2.11 29.41 L 8.71 26.21 L 11.44 19.62 L 9.04 12.70 L 12.70 9.04 L 19.62 11.44 L 26.21 8.71 L 29.41 2.11 L 34.59 2.11 L 37.79 8.71 Z" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- "A" drawn as a coordinate triad: apex = origin, legs = X/Y axes, stub = Z axis -->
+  <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="32" y1="20" x2="32" y2="11" stroke="#4a9eff"/>
+    <line x1="32" y1="20" x2="18" y2="46" stroke="#30a46c"/>
+    <line x1="32" y1="20" x2="46" y2="46" stroke="#e5484d"/>
+    <line x1="21.8" y1="39" x2="42.2" y2="39" stroke="#e0e0e0"/>
+  </g>
+
+  <!-- origin node where the three axes meet -->
+  <circle cx="32" cy="20" r="4" fill="#1a1a1a" stroke="#e0e0e0" stroke-width="2"/>
+</svg>

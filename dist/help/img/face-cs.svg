@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 210" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="360" height="210" fill="#ffffff"/>
+  <!-- inclined face -->
+  <polygon points="70,170 250,170 300,110 120,110" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="210" y="160" fill="#3b82f6" font-size="12">наклонная грань</text>
+  <!-- origin -->
+  <circle cx="120" cy="140" r="4" fill="#111827"/>
+  <text x="70" y="158" fill="#374151" font-size="12">origin</text>
+  <!-- normal (up) -->
+  <line x1="120" y1="140" x2="160" y2="40" stroke="#2563eb" stroke-width="2.5"/>
+  <polygon points="160,40 151,48 162,51" fill="#2563eb"/>
+  <text x="166" y="42" fill="#2563eb" font-weight="700">normal</text>
+  <text x="166" y="58" fill="#9ca3af" font-size="11">куда смотрит грань</text>
+  <!-- uAxis (right along face) -->
+  <line x1="120" y1="140" x2="270" y2="140" stroke="#16a34a" stroke-width="2.5"/>
+  <polygon points="270,140 260,135 260,145" fill="#16a34a"/>
+  <text x="276" y="145" fill="#16a34a" font-weight="700">uAxis</text>
+  <!-- vAxis (up-back along face) -->
+  <line x1="120" y1="140" x2="200" y2="100" stroke="#ef4444" stroke-width="2.5"/>
+  <polygon points="200,100 191,103 196,110" fill="#ef4444"/>
+  <text x="205" y="98" fill="#ef4444" font-weight="700">vAxis</text>
+</svg>

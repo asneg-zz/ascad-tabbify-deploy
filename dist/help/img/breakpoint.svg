@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="14">
+  <rect width="420" height="120" fill="#0d1117" rx="8"/>
+  <!-- gutter -->
+  <line x1="56" y1="0" x2="56" y2="120" stroke="#30363d"/>
+  <!-- line 12 highlighted with breakpoint -->
+  <rect x="56" y="34" width="364" height="26" fill="#3b2b2b"/>
+  <circle cx="30" cy="47" r="7" fill="#f85149"/>
+  <text x="40" y="52" fill="#8b949e">12</text>
+  <text x="68" y="52" fill="#e6edf3">body.cut(hole, height=10)</text>
+  <text x="290" y="52" fill="#f0883e" font-size="12">← остановка тут</text>
+  <!-- other lines -->
+  <text x="40" y="26" fill="#8b949e">11</text>
+  <text x="68" y="26" fill="#6e7681">sk.circle((0,0), 5)</text>
+  <text x="40" y="80" fill="#8b949e">13</text>
+  <text x="68" y="80" fill="#6e7681">scene.save("part")</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="360" height="190" fill="#ffffff"/>
+  <!-- axis -->
+  <line x1="70" y1="20" x2="70" y2="170" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="40" y="30" fill="#ef4444">ось</text>
+  <!-- profile -->
+  <polygon points="70,150 110,150 100,90 120,60 70,60" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="78" y="120" fill="#2563eb" font-size="11">профиль</text>
+  <!-- arrow -->
+  <path d="M150,95 a30,12 0 1 1 -2,0" fill="none" stroke="#6b7280" stroke-width="2"/>
+  <polygon points="148,95 142,101 154,103" fill="#6b7280"/>
+  <text x="135" y="135" fill="#6b7280">вращение 360°</text>
+  <!-- revolved solid (cup-like) -->
+  <ellipse cx="290" cy="60" rx="45" ry="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <path d="M245,60 q5,70 45,75 q40,-5 45,-75" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+  <ellipse cx="290" cy="60" rx="30" ry="9" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="255" y="160" fill="#374151">деталь вращения</text>
+</svg>

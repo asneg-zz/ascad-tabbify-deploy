@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 180" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="380" height="180" fill="#ffffff"/>
+  <!-- 2D sketch rectangle -->
+  <rect x="30" y="70" width="80" height="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="34" y="140" fill="#374151">эскиз (2D)</text>
+  <!-- arrow -->
+  <line x1="130" y1="95" x2="190" y2="95" stroke="#6b7280" stroke-width="2"/>
+  <polygon points="190,95 180,90 180,100" fill="#6b7280"/>
+  <text x="132" y="86" fill="#6b7280">выдавить</text>
+  <!-- 3D box (extruded) -->
+  <polygon points="220,120 300,120 300,60 220,60" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="220,60 300,60 330,38 250,38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="300,120 330,98 330,38 300,60" fill="#93c5fd" stroke="#2563eb" stroke-width="2"/>
+  <!-- height arrow -->
+  <line x1="210" y1="120" x2="210" y2="60" stroke="#ef4444" stroke-width="1.5"/>
+  <polygon points="210,60 206,68 214,68" fill="#ef4444"/>
+  <text x="180" y="96" fill="#ef4444">высота</text>
+  <text x="250" y="145" fill="#374151">деталь (3D)</text>
+</svg>

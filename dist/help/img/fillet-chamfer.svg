@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 170" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="380" height="170" fill="#ffffff"/>
+  <!-- sharp -->
+  <path d="M20,120 V50 H90" fill="none" stroke="#94a3b8" stroke-width="3"/>
+  <text x="20" y="145" fill="#374151">острый угол</text>
+  <!-- fillet -->
+  <path d="M150,120 V70 Q150,50 170,50 H220" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="150" y="145" fill="#2563eb">скругление</text>
+  <text x="158" y="62" fill="#2563eb" font-size="11">R</text>
+  <!-- chamfer -->
+  <path d="M280,120 V70 L300,50 H350" fill="none" stroke="#16a34a" stroke-width="3"/>
+  <text x="295" y="145" fill="#16a34a">фаска</text>
+</svg>

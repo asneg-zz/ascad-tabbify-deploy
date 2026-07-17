@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="14">
+  <rect width="360" height="220" fill="#ffffff"/>
+  <!-- XY plane -->
+  <polygon points="70,150 230,150 280,110 120,110" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="250" y="135" fill="#3b82f6">плоскость XY</text>
+  <!-- origin -->
+  <circle cx="120" cy="150" r="3.5" fill="#111827"/>
+  <text x="96" y="170" fill="#374151">начало (0,0,0)</text>
+  <!-- X axis (red) -->
+  <line x1="120" y1="150" x2="300" y2="150" stroke="#ef4444" stroke-width="2.5"/>
+  <polygon points="300,150 290,145 290,155" fill="#ef4444"/>
+  <text x="305" y="155" fill="#ef4444" font-weight="700">X</text>
+  <!-- Y axis (green) into screen -->
+  <line x1="120" y1="150" x2="190" y2="100" stroke="#22c55e" stroke-width="2.5"/>
+  <polygon points="190,100 184,108 194,106" fill="#22c55e"/>
+  <text x="196" y="98" fill="#22c55e" font-weight="700">Y</text>
+  <!-- Z axis (blue) up -->
+  <line x1="120" y1="150" x2="120" y2="40" stroke="#2563eb" stroke-width="2.5"/>
+  <polygon points="120,40 115,50 125,50" fill="#2563eb"/>
+  <text x="128" y="46" fill="#2563eb" font-weight="700">Z (вверх)</text>
+</svg>

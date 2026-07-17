@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 200" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="340" height="200" fill="#ffffff"/>
+  <!-- ground + hinge -->
+  <rect x="30" y="70" width="40" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+  <circle cx="70" cy="81" r="7" fill="#111827"/>
+  <text x="20" y="60" fill="#374151" font-size="11">шарнир</text>
+  <!-- arm -->
+  <rect x="70" y="73" width="150" height="16" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="66" fill="#2563eb" font-size="11">деталь (масса m)</text>
+  <!-- gravity arrow -->
+  <line x1="150" y1="95" x2="150" y2="150" stroke="#9ca3af" stroke-width="2"/>
+  <polygon points="150,152 145,142 155,142" fill="#9ca3af"/>
+  <text x="156" y="135" fill="#9ca3af">тяжесть m·g</text>
+  <!-- reaction arrow at hinge -->
+  <line x1="70" y1="81" x2="70" y2="25" stroke="#ef4444" stroke-width="2.5"/>
+  <polygon points="70,23 64,34 76,34" fill="#ef4444"/>
+  <text x="80" y="30" fill="#ef4444" font-weight="700">реакция (Н)</text>
+  <text x="30" y="185" fill="#374151" font-size="12">ASCAD считает силу в шарнире под нагрузкой</text>
+</svg>

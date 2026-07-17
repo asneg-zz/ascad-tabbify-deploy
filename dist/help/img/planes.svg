@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5">
+  <rect width="420" height="180" fill="#ffffff"/>
+  <!-- XY: lay on floor, grows up Z -->
+  <g>
+    <text x="20" y="24" fill="#2563eb" font-weight="700">XY — на полу</text>
+    <polygon points="20,120 110,120 130,100 40,100" fill="#dbeafe" stroke="#93c5fd"/>
+    <rect x="55" y="98" width="30" height="14" fill="#bfdbfe" stroke="#2563eb"/>
+    <line x1="70" y1="98" x2="70" y2="50" stroke="#16a34a" stroke-width="2.5"/>
+    <polygon points="70,50 65,60 75,60" fill="#16a34a"/>
+    <text x="78" y="60" fill="#16a34a" font-size="11">растёт вверх (z)</text>
+  </g>
+  <!-- XZ: on wall, grows into Y -->
+  <g>
+    <text x="170" y="24" fill="#2563eb" font-weight="700">XZ — на стене</text>
+    <polygon points="175,120 175,55 245,55 245,120" fill="#dbeafe" stroke="#93c5fd"/>
+    <rect x="195" y="78" width="24" height="20" fill="#bfdbfe" stroke="#2563eb"/>
+    <line x1="219" y1="88" x2="270" y2="70" stroke="#16a34a" stroke-width="2.5"/>
+    <polygon points="270,70 260,70 264,79" fill="#16a34a"/>
+    <text x="250" y="115" fill="#16a34a" font-size="11">вглубь (y)</text>
+  </g>
+  <!-- YZ: grows sideways X -->
+  <g>
+    <text x="320" y="24" fill="#2563eb" font-weight="700">YZ — вбок</text>
+    <polygon points="330,120 330,55 380,40 380,105" fill="#dbeafe" stroke="#93c5fd"/>
+    <rect x="345" y="68" width="18" height="22" fill="#bfdbfe" stroke="#2563eb"/>
+    <line x1="363" y1="79" x2="408" y2="79" stroke="#16a34a" stroke-width="2.5"/>
+    <polygon points="408,79 398,74 398,84" fill="#16a34a"/>
+    <text x="345" y="140" fill="#16a34a" font-size="11">вбок (x)</text>
+  </g>
+</svg>

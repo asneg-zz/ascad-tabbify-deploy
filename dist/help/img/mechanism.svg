@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 190" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="340" height="190" fill="#ffffff"/>
+  <!-- ground -->
+  <rect x="40" y="120" width="120" height="22" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+  <text x="44" y="160" fill="#9ca3af" font-size="11">опора (закреплена)</text>
+  <!-- hinge -->
+  <circle cx="160" cy="131" r="7" fill="#ef4444"/>
+  <!-- arm -->
+  <rect x="150" y="60" width="120" height="20" rx="6" fill="#93c5fd" stroke="#2563eb" stroke-width="2" transform="rotate(-32 160 131)"/>
+  <!-- motor arc arrow -->
+  <path d="M188,92 a40,40 0 0 1 22,30" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+  <polygon points="210,122 200,118 206,110" fill="#16a34a"/>
+  <text x="214" y="110" fill="#16a34a">мотор</text>
+  <text x="150" y="40" fill="#2563eb">рычаг (движется)</text>
+</svg>

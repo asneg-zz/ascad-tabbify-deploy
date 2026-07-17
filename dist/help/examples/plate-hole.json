@@ -1,0 +1,104 @@
+{
+  "version": 2,
+  "bodies": [
+    {
+      "id": "82d35eaa-db6e-4d67-b9d2-b9b09abd18ee",
+      "name": "Пластина",
+      "visible": true,
+      "features": [
+        {
+          "id": "cad6ab6f-237a-4078-9770-99bebd3dd47e",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "bf97771a-794d-42d7-9b75-eb0df18f01c8",
+                "type": "rectangle",
+                "corner": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "width": 40.0,
+                "height": 24.0
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "1983bce0-37ad-4542-b029-4a5885e95c8a",
+          "type": "extrude",
+          "sketch_id": "cad6ab6f-237a-4078-9770-99bebd3dd47e",
+          "height": 6.0,
+          "height_backward": 0.0,
+          "draft_angle": 0.0,
+          "cut": false
+        },
+        {
+          "id": "8767d018-fcae-453f-9b99-0e567d876523",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 6.0,
+            "elements": [
+              {
+                "id": "b2124e3d-c95a-4945-958a-17cfb0194ada",
+                "type": "circle",
+                "center": {
+                  "x": 20.0,
+                  "y": 12.0
+                },
+                "radius": 6.0
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "c2acb51f-04bf-4efd-94c2-839c22fedd9a",
+          "type": "extrude",
+          "sketch_id": "8767d018-fcae-453f-9b99-0e567d876523",
+          "height": 0.0,
+          "height_backward": 8.0,
+          "draft_angle": 0.0,
+          "cut": true
+        }
+      ]
+    }
+  ],
+  "body_operations": []
+}

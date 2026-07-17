@@ -1,0 +1,12 @@
+{
+  "name": "vcad-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "wasm_vCAD prebuilt static demo (served with COOP/COEP for threaded WASM)",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Документация ASCAD</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1f2329;background:#fff}
+.layout{display:flex;min-height:100vh}
+nav{width:260px;flex:0 0 260px;border-right:1px solid #e5e7eb;padding:14px;position:sticky;top:0;height:100vh;overflow:auto;background:#fafafa}
+nav .search{width:100%;padding:7px 9px;border:1px solid #d1d5db;border-radius:6px;margin-bottom:10px;font:inherit}
+nav a{display:block;padding:6px 8px;color:#374151;text-decoration:none;border-radius:6px;font-size:14px}
+nav a:hover{background:#eef2ff}
+nav a.active{background:#e0e7ff;color:#3730a3;font-weight:600}
+nav .nav-group{margin:14px 4px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af}
+main{flex:1;min-width:0;padding:24px 40px;max-width:880px}
+.doc{padding-bottom:36px;border-bottom:1px solid #eee;margin-bottom:24px;scroll-margin-top:16px}
+h1{font-size:26px;margin:.2em 0 .5em} h2{font-size:21px;margin-top:1.4em} h3{font-size:17px}
+code{background:#f3f4f6;padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:#0d1117;color:#e6edf3;padding:14px 16px;border-radius:8px;overflow:auto}
+pre code{background:none;color:inherit;padding:0;font-size:13px}
+a{color:#2563eb}
+blockquote{border-left:3px solid #d1d5db;margin:1em 0;padding:.2em 1em;color:#4b5563}
+table{border-collapse:collapse} td,th{border:1px solid #e5e7eb;padding:6px 10px}
+.callout{border-radius:8px;padding:10px 14px;margin:1em 0;border-left:4px solid #888;background:#f6f8fa}
+.callout-title{font-weight:700;margin-bottom:4px}
+.callout-tip,.callout-success{border-color:#16a34a;background:#f0fdf4}
+.callout-note,.callout-info{border-color:#2563eb;background:#eff6ff}
+.callout-warning,.callout-important{border-color:#d97706;background:#fffbeb}
+.callout-danger{border-color:#dc2626;background:#fef2f2}
+.callout-question{border-color:#7c3aed;background:#f5f3ff}
+.callout-example{border-color:#0891b2;background:#ecfeff}
+.callout-quote{border-color:#9ca3af;background:#f9fafb}
+.callout p:last-child{margin-bottom:0}
+main img{display:block;max-width:100%;margin:16px auto 4px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px}
+main p em:only-child{display:block;text-align:center;color:#6b7280;font-size:13px;margin:0 0 12px}
+.ex-btn{display:inline-block;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;margin:6px 0}
+.ex-btn:hover{background:#1d4ed8}
+@media(max-width:760px){nav{display:none}main{padding:16px}}
+</style></head>
+<body><div class="layout">
+<nav>
+<input class="search" type="search" placeholder="Поиск по разделам…" aria-label="Поиск">
+<a href="#oglavlenie" data-id="oglavlenie">🧩 ASCAD: рисуем детали кодом на Python</a>
+<div class="nav-group">Начало</div>
+<a href="#interfeys-i-rezhimy" data-id="interfeys-i-rezhimy">🖥️ Интерфейс и режимы</a>
+<a href="#proekt-sohranenie-i-otkrytie" data-id="proekt-sohranenie-i-otkrytie">💾 Проект: сохранение и открытие</a>
+<div class="nav-group">Эскиз</div>
+<a href="#instrumenty-eskiza" data-id="instrumenty-eskiza">✏️ Инструменты эскиза</a>
+<a href="#razmery-i-ogranicheniya" data-id="razmery-i-ogranicheniya">📐 Размеры и ограничения</a>
+<a href="#tekst-v-eskize" data-id="tekst-v-eskize">🔤 Текст в эскизе</a>
+<div class="nav-group">Деталь</div>
+<a href="#vraschenie-obolochka-massivy" data-id="vraschenie-obolochka-massivy">🌀 Вращение, оболочка, массивы</a>
+<a href="#vydavlivanie-i-vyrez" data-id="vydavlivanie-i-vyrez">📦 Выдавливание и вырез</a>
+<a href="#material-i-massa" data-id="material-i-massa">⚖️ Материал и масса</a>
+<a href="#skruglenie-i-faska" data-id="skruglenie-i-faska">🔵 Скругление и фаска</a>
+<div class="nav-group">Импорт-экспорт</div>
+<a href="#step-i-proekty" data-id="step-i-proekty">🔄 Импорт и экспорт</a>
+<div class="nav-group">Сборка</div>
+<a href="#ekzemplyary-i-sopryazheniya" data-id="ekzemplyary-i-sopryazheniya">🧷 Сборка: экземпляры и сопряжения</a>
+<div class="nav-group">Механизм и силы</div>
+<a href="#privody-i-zapusk" data-id="privody-i-zapusk">⚙️ Приводы и запуск механизма</a>
+<a href="#sily-i-grafiki" data-id="sily-i-grafiki">💪 Силы и графики</a>
+<div class="nav-group">Библиотека</div>
+<a href="#komponenty-shesterni-krepezh" data-id="komponenty-shesterni-krepezh">🧰 Библиотека компонентов</a>
+<div class="nav-group">Python (vcad-py)</div>
+<a href="#1-sistemy-koordinat" data-id="1-sistemy-koordinat">1. Системы координат — где что находится</a>
+<a href="#2-pervaya-detal" data-id="2-pervaya-detal">2. Первая деталь — готовые фигуры</a>
+<a href="#3-eskiz-i-vydavlivanie" data-id="3-eskiz-i-vydavlivanie">3. Эскиз и выдавливание</a>
+<a href="#4-otverstiya-i-vyrezy" data-id="4-otverstiya-i-vyrezy">4. Отверстия и вырезы</a>
+<a href="#5-eskiz-na-grani" data-id="5-eskiz-na-grani">5. Эскиз на грани</a>
+<a href="#6-otladchik" data-id="6-otladchik">6. Отладчик — смотрим, как деталь растёт по шагам</a>
+<a href="#7-vneshniy-zapusk-cursor" data-id="7-vneshniy-zapusk-cursor">7. Внешний запуск — пишем код в своём редакторе</a>
+<a href="#spravochnik-api" data-id="spravochnik-api">📖 Справочник API vcad-py</a>
+<div class="nav-group">Совместная работа</div>
+<a href="#rezhimy-i-komnaty" data-id="rezhimy-i-komnaty">👥 Совместная работа</a>
+<div class="nav-group">Шпаргалки</div>
+<a href="#goryachie-klavishi" data-id="goryachie-klavishi">⌨️ Горячие клавиши</a>
+<a href="#materialy" data-id="materialy">🧱 Таблица материалов</a>
+<a href="#shpargalka-vcad-py" data-id="shpargalka-vcad-py">🧾 Шпаргалка ASCAD</a>
+</nav>
+<main>
+<section id="oglavlenie" class="doc">
+<h1>🧩 ASCAD: рисуем детали кодом на Python</h1>
+<p>Привет! Это твой путеводитель по <strong>ASCAD</strong> — программе, где 3D-детали
+создаются не мышкой, а маленькими <strong>скриптами на Python</strong>. Ты пишешь
+несколько строк — и на экране появляется настоящая объёмная деталь,
+которую можно напечатать на 3D-принтере.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Как этим пользоваться</div><p>Открой эту папку как <strong>хранилище Obsidian</strong> (Open folder as vault).
+Заметки связаны ссылками — переходи по ним по порядку, как по урокам.</p>
+</div>
+<h2>📚 Уроки по порядку</h2>
+<ol>
+<li><a href="#1-sistemy-koordinat">1. Системы координат</a> — где «верх», «низ» и куда смотрит деталь. <strong>Самый важный урок!</strong></li>
+<li><a href="#2-pervaya-detal">2. Первая деталь</a> — кубик и цилиндр за 4 строки.</li>
+<li><a href="#3-eskiz-i-vydavlivanie">3. Эскиз и выдавливание</a> — рисуем плоскую фигуру и «вытягиваем» её в объём.</li>
+<li><a href="#4-otverstiya-i-vyrezy">4. Отверстия и вырезы</a> — как сделать отверстие.</li>
+<li><a href="#5-eskiz-na-grani">5. Эскиз на грани</a> — рисуем прямо на стенке детали.</li>
+<li><a href="#6-otladchik">6. Отладчик</a> — пошаговое выполнение: смотрим, как деталь растёт.</li>
+<li><a href="#7-vneshniy-zapusk-cursor">7. Внешний запуск (Cursor)</a> — пишем код в своём редакторе, деталь строится в браузере.</li>
+<li>Шпаргалка — все команды на одной странице.</li>
+</ol>
+<h2>🚀 Самый первый запуск</h2>
+<p>Открой в ASCAD правую панель <strong>Python</strong> и набери:</p>
+<pre><code class="language-python">from vcad import Scene
+
+scene = Scene()
+body = scene.add_body(name=&quot;Привет&quot;)
+body.cube(width=20, height=20, depth=20)
+</code></pre>
+<p>Нажми <strong>Запустить</strong> — появится кубик. Поздравляю, ты только что
+«запрограммировал» деталь! 🎉</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Одно золотое правило</div><p>Главное — чтобы к моменту, когда скрипт <strong>закончит выполняться</strong>, в нём
+существовала переменная с именем <strong><code>scene</code></strong>: именно её ASCAD рисует.
+Обычно её создают <strong>в начале</strong> (<code>scene = Scene()</code>), а потом наполняют
+деталями — и она «живёт» до конца. То есть «в конце» значит «к моменту
+завершения», а не «на последней строке». Отдельно «сохранять» ничего
+не нужно — ASCAD сам всё рисует.</p>
+</div>
+<p>Дальше → <a href="#1-sistemy-koordinat">1. Системы координат</a></p>
+
+</section>
+<section id="interfeys-i-rezhimy" class="doc">
+<h1>🖥️ Интерфейс и режимы</h1>
+<p>Окно ASCAD простое: в центре — <strong>3D-вьюпорт</strong> (где видно деталь), по краям —
+панели, а вверху — панель инструментов. Слева обычно <strong>дерево сцены</strong> (список
+тел и операций), справа можно открыть панель <strong>Python</strong>.</p>
+<h2>Три режима работы</h2>
+<p>ASCAD переключается между тремя режимами — у каждого свои инструменты:</p>
+<ul>
+<li><strong>Часть (деталь)</strong> — лепишь одну деталь: эскизы, выдавливание, скругления.</li>
+<li><strong>Эскиз</strong> — рисуешь плоский контур (открывается, когда начинаешь эскиз).</li>
+<li><strong>Сборка</strong> — ставишь несколько деталей вместе и соединяешь связями
+(см. <a href="#ekzemplyary-i-sopryazheniya">Экземпляры и сопряжения</a>); тут же оживает <a href="#privody-i-zapusk">механизм</a>.</li>
+</ul>
+<h2>Навигация в 3D</h2>
+<ul>
+<li><strong>Вращать вид</strong> — зажми среднюю кнопку мыши (или правую) и двигай.</li>
+<li><strong>Зум</strong> — колесо мыши.</li>
+<li><strong>Сдвиг</strong> — Shift + средняя кнопка.</li>
+<li>Кубик-ориентир в углу показывает, где X/Y/Z (см. <a href="#1-sistemy-koordinat">1. Системы координат</a>).</li>
+</ul>
+<h2>Дерево сцены</h2>
+<p>Список того, из чего собрана деталь: её операции по порядку
+(эскиз → выдавливание → скругление…). Клик по элементу выделяет его; отсюда же
+открываются <strong>«Свойства детали»</strong> (цвет, <a href="#material-i-massa">материал</a>).</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Кнопка «?»</div><p>Меню «<strong>?</strong>» в углу — это справка (то, что ты читаешь), обратная связь,
+настройки и переключение режимов совместной работы
+(см. <a href="#rezhimy-i-komnaty">Режимы и комнаты</a>).</p>
+</div>
+<p>Дальше → <a href="#proekt-sohranenie-i-otkrytie">Проект — сохранение и открытие</a></p>
+
+</section>
+<section id="proekt-sohranenie-i-otkrytie" class="doc">
+<h1>💾 Проект: сохранение и открытие</h1>
+<p>Чтобы не потерять работу, проект <strong>сохраняют в файл</strong>. У ASCAD один удобный
+формат — <strong><code>.ascad.json</code></strong>: в одном файле лежит всё (детали, сборка, скрипты).</p>
+<h2>Сохранить и открыть</h2>
+<ul>
+<li><strong>«Сохранить проект в файл…»</strong> — записывает весь проект в один <code>.ascad.json</code>.</li>
+<li><strong>«Открыть проект в файл…»</strong> — загружает его обратно.</li>
+</ul>
+
+<div class="callout callout-note"><div class="callout-title">📝 Всё хранится в браузере</div><p>ASCAD работает прямо в браузере и держит проекты у тебя на компьютере —
+ничего не уходит на сервер. Файл <code>.ascad.json</code> можно переслать другу или
+учителю — он откроет ровно то же самое.</p>
+</div>
+<h2>Автооткрытие последнего</h2>
+<p>Когда ты возвращаешься в ASCAD, он <strong>сам открывает последний проект</strong> —
+продолжай с того места, где остановился. Новый пустой проект он не создаёт и
+старый не дублирует.</p>
+<h2>Обмен деталями</h2>
+<p>Отдельную деталь можно <strong>сохранить/загрузить</strong> как файл, чтобы перенести её в
+другой проект. В сборке есть <strong>«Импорт детали»</strong> — добавить готовую деталь в
+текущий проект (см. <a href="#ekzemplyary-i-sopryazheniya">Экземпляры и сопряжения</a>).</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Поделиться проектом</div><p>Чтобы показать работу, пришли <code>.ascad.json</code> — это «фотография» всего проекта,
+её можно открыть на другом компьютере.</p>
+</div>
+<p>Дальше → <a href="#instrumenty-eskiza">Инструменты эскиза</a></p>
+
+</section>
+<section id="instrumenty-eskiza" class="doc">
+<h1>✏️ Инструменты эскиза</h1>
+<p>Эскиз — это <strong>плоский рисунок</strong> (контур), из которого получается объёмная
+деталь. Сначала рисуешь фигуру на плоскости, потом «вытягиваешь» её в 3D
+(см. <a href="#vydavlivanie-i-vyrez">Выдавливание и вырез</a>).</p>
+<h2>Как войти в эскиз</h2>
+<ol>
+<li>Выбери плоскость (XY, XZ, YZ) или <strong>грань</strong> уже готовой детали.</li>
+<li>Нажми <strong>«Эскиз»</strong> — появится панель инструментов рисования.</li>
+<li>Нарисуй контур, выйди из эскиза и выдавливай.</li>
+</ol>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Замкнутый контур</div><p>Чтобы фигуру можно было превратить в деталь, контур должен быть <strong>замкнутым</strong>
+(линии соединяются в кольцо, без разрывов). Незамкнутый контур годится для
+прорези или направляющей.</p>
+</div>
+<h2>Инструменты рисования</h2>
+<ul>
+<li><strong>Точка</strong> — вспомогательная точка (центр, привязка).</li>
+<li><strong>Линия</strong> — отрезок по двум точкам.</li>
+<li><strong>Прямоугольник</strong> — по двум углам; <strong>от центра</strong> — от середины.</li>
+<li><strong>Окружность</strong> — центр + радиус.</li>
+<li><strong>Дуга</strong> — по 3 точкам или из центра.</li>
+<li><strong>Полигон</strong> — правильный многоугольник (задаёшь число сторон).</li>
+<li><strong>Эллипс</strong> — две полуоси.</li>
+<li><strong>Паз</strong> (slot) — «капсула»: две полуокружности, соединённые линиями.</li>
+<li><strong>Полилиния</strong> — много отрезков одной фигурой.</li>
+<li><strong>Сплайн</strong> — плавная кривая по точкам.</li>
+<li><strong>Текст</strong> — буквы как контур (см. <a href="#tekst-v-eskize">Текст в эскизе</a>).</li>
+</ul>
+<h2>Правки контура</h2>
+<ul>
+<li><strong>Обрезать</strong> — убрать кусок линии до пересечения.</li>
+<li><strong>Скругление / фаска</strong> — скруглить или срезать угол между линиями.</li>
+<li><strong>Зеркало</strong> — отразить элементы относительно оси.</li>
+<li><strong>Массив</strong> — размножить элементы (линейно или по кругу).</li>
+</ul>
+
+<div class="callout callout-note"><div class="callout-title">📝 Привязки</div><p>Курсор «прилипает» к концам, центрам и пересечениям — так фигуры стыкуются
+точно. Можно привязываться и к рёбрам готовой детали.</p>
+</div>
+<p>Дальше → <a href="#razmery-i-ogranicheniya">Размеры и ограничения</a></p>
+
+</section>
+<section id="razmery-i-ogranicheniya" class="doc">
+<h1>📐 Размеры и ограничения</h1>
+<p>Нарисовать «на глаз» — это полдела. Чтобы деталь была <strong>точной</strong> и легко
+менялась, контуру задают <strong>размеры</strong> и <strong>ограничения</strong>.</p>
+<h2>Размеры</h2>
+<p>Размер фиксирует число: длину отрезка, диаметр окружности, расстояние между
+точками. Поставил размер 40 — линия станет ровно 40 мм; поменял число — фигура
+перестроится.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Параметры</div><p>Размеру можно дать имя-параметр. Тогда несколько размеров меняются вместе,
+если они зависят от одного параметра.</p>
+</div>
+<h2>Ограничения</h2>
+<p>Ограничение задаёт <strong>правило</strong> между элементами, без чисел:</p>
+<ul>
+<li><strong>Горизонталь / вертикаль</strong> — линия строго по оси.</li>
+<li><strong>Совпадение</strong> — две точки в одном месте.</li>
+<li><strong>Параллельность / перпендикулярность</strong> — линии параллельны или под 90°.</li>
+<li><strong>Равенство</strong> — одинаковая длина/радиус.</li>
+<li><strong>Касание</strong>, <strong>концентричность</strong>, <strong>симметрия</strong>, <strong>точка на линии</strong>…</li>
+</ul>
+<p>Чем больше правил, тем «жёстче» эскиз: он перестаёт «болтаться» и ведёт себя
+предсказуемо.</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Степени свободы</div><p>Когда правил и размеров достаточно, эскиз становится <strong>полностью определён</strong> —
+его уже нельзя случайно потянуть и сломать.</p>
+</div>
+<h2>Полезные правки</h2>
+<ul>
+<li><strong>Обрезать</strong> — отрезать лишнее до пересечения.</li>
+<li><strong>Скругление / фаска</strong> — на углах между линиями.</li>
+<li><strong>Зеркало</strong> — относительно оси симметрии.</li>
+<li><strong>Массив</strong> — линейный или круговой повтор.</li>
+</ul>
+<p>Дальше → <a href="#tekst-v-eskize">Текст в эскизе</a></p>
+
+</section>
+<section id="tekst-v-eskize" class="doc">
+<h1>🔤 Текст в эскизе</h1>
+<p>Можно написать <strong>настоящие буквы</strong> прямо в эскизе и превратить их в объём —
+табличку, надпись, гравировку.</p>
+<p><img src="img/text.svg" alt="Контур букв превращается в объёмную надпись">
+<em>Контур букв (эскиз) → выдавливание → объёмная надпись</em></p>
+<h2>Как добавить текст</h2>
+<ol>
+<li>В эскизе выбери инструмент <strong>«Текст»</strong>.</li>
+<li>Кликни в том месте, где начнётся надпись (левый край строки).</li>
+<li>В окошке введи <strong>строку</strong> и <strong>высоту</strong> букв (в мм) → ОК.</li>
+<li>Контуры букв появятся в эскизе.</li>
+</ol>
+<p>Поддерживаются русские и латинские буквы, цифры и знаки (шрифт DejaVu Sans).</p>
+<h2>Правка и перемещение</h2>
+<ul>
+<li><strong>Двойной клик</strong> по тексту — открыть окно правки (или ПКМ → «Изменить текст»).</li>
+<li>Поменяй строку или высоту — контуры пересчитаются.</li>
+<li>Перетаскивай за <strong>опорную точку</strong> (крестик слева), чтобы сдвинуть надпись.</li>
+</ul>
+<h2>Объём из текста</h2>
+<p>Выйди из эскиза и применяй как к любому контуру:</p>
+<ul>
+<li><strong>Выдавить</strong> → выпуклые буквы (поднятая надпись).</li>
+<li><strong>Вырез</strong> → гравировка. Внутренние «островки» букв (в <strong>о, р, в, а, б</strong>…)
+остаются материалом — буквы читаются правильно.</li>
+</ul>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Табличка с надписью</div><p>Сделай пластину (прямоугольник → выдавить), затем эскиз с текстом на её
+верхней грани и <strong>вырежи</strong> его неглубоко — получится гравированная табличка.</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Из Python тоже можно</div><p><code>sk.text((0, 0), &quot;Привет&quot;, height=12)</code> — то же самое из скрипта
+(см. <a href="#spravochnik-api">Справочник API</a>).</p>
+</div>
+
+</section>
+<section id="vraschenie-obolochka-massivy" class="doc">
+<h1>🌀 Вращение, оболочка, массивы</h1>
+<p>Кроме выдавливания есть ещё несколько способов получить объём — для тел
+вращения, тонкостенных деталей и повторяющихся элементов.</p>
+<h2>Вращение</h2>
+<p>Крутит контур вокруг <strong>оси</strong> и заметает деталь вращения — вал, чашка, бутылка.</p>
+<p><img src="img/revolve.svg" alt="Профиль вращается вокруг оси и образует деталь вращения">
+<em>Профиль + ось → вращение 360° → деталь вращения</em></p>
+<ul>
+<li><strong>Вращение</strong> — добавить материал.</li>
+<li><strong>Вырез вращением</strong> — убрать (например, проточку на валу).
+Контур рисуют сбоку от оси; полный оборот = 360°, можно меньше.</li>
+</ul>
+<h2>Оболочка (shell)</h2>
+<p>Делает деталь <strong>полой</strong>: выбираешь грань-«крышку», задаёшь толщину стенки —
+внутри образуется полость. Так получают стаканы, корпуса, коробки.</p>
+<p><img src="img/shell.svg" alt="Сплошная деталь становится полой с тонкими стенками">
+<em>Оболочка: сплошная деталь → полая со стенками заданной толщины</em></p>
+<h2>Массивы</h2>
+<p>Размножают элемент, не рисуя его заново:</p>
+<p><img src="img/pattern.svg" alt="Линейный и круговой массивы">
+<em>Линейный массив (ряд с шагом) и круговой (по кругу)</em></p>
+<ul>
+<li><strong>Линейный массив</strong> — ряд копий с шагом (отверстия в планке).</li>
+<li><strong>Круговой массив</strong> — копии по кругу (зубья, болты по фланцу).</li>
+</ul>
+<h2>Лофт и свип (продвинутое)</h2>
+<ul>
+<li><strong>Лофт</strong> — плавный переход между несколькими сечениями.</li>
+<li><strong>Свип</strong> — протянуть профиль вдоль траектории; есть спираль и скручивание
+(twist) — пружины, резьба, винтовые формы.</li>
+</ul>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Что выбрать</div><p>Симметрично вокруг оси — <strong>вращение</strong>. Тонкие стенки — <strong>оболочка</strong>.
+Много одинаковых — <strong>массив</strong>. Сложная плавная форма — <strong>лофт/свип</strong>.</p>
+</div>
+<p>Дальше → <a href="#material-i-massa">Материал и масса</a></p>
+
+</section>
+<section id="vydavlivanie-i-vyrez" class="doc">
+<h1>📦 Выдавливание и вырез</h1>
+<p>Из плоского эскиза получают объём двумя главными операциями: <strong>выдавливание</strong>
+(добавить материал) и <strong>вырез</strong> (убрать материал).</p>
+<p><img src="img/extrude.svg" alt="Эскиз превращается в деталь выдавливанием">
+<em>Плоский эскиз → выдавить на высоту → объёмная деталь</em></p>
+<h2>Выдавливание</h2>
+<p>Берёт замкнутый контур и «вытягивает» его на заданную высоту.</p>
+<ol>
+<li>Нарисуй контур в эскизе и выйди из него.</li>
+<li>Выбери эскиз → <strong>«Выдавить»</strong>.</li>
+<li>Задай <strong>высоту</strong>. Готово — появилась деталь.</li>
+</ol>
+<p>Параметры: высота, двусторонность (в обе стороны от эскиза), небольшой <strong>уклон</strong>
+(стенки под углом).</p>
+<h2>Вырез</h2>
+<p>То же выдавливание, но <strong>вычитает</strong> объём из существующей детали — так делают
+отверстия и карманы (см. <a href="#4-otverstiya-i-vyrezy">Отверстия и вырезы</a> для скриптового варианта).</p>
+<p><img src="img/cut.svg" alt="Отверстие = круг, вырезанный насквозь">
+<em>Отверстие: нарисуй круг и вырежи его сквозь деталь</em></p>
+<ol>
+<li>Эскиз на грани или плоскости.</li>
+<li><strong>«Вырез»</strong> на нужную глубину (можно «насквозь»).</li>
+</ol>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Редактор «на детали»</div><p>После создания не нужно лезть в меню: у детали появляются <strong>стрелки</strong> —
+потяни, чтобы менять высоту прямо в 3D. Рядом — плавающая карточка
+<strong>«Свойства»</strong>, где можно вписать точное число.</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Имя в дереве</div><p>В дереве сцены у выдавливания показывается его высота — удобно отличать
+несколько выдавливаний.</p>
+</div>
+<p>Дальше → <a href="#skruglenie-i-faska">Скругление и фаска</a></p>
+
+</section>
+<section id="material-i-massa" class="doc">
+<h1>⚖️ Материал и масса</h1>
+<p>Деталь можно сделать «настоящей» — задать <strong>материал</strong>, и ASCAD сам посчитает
+её <strong>массу</strong>. Это нужно для расчёта сил в механизмах (см. <a href="#sily-i-grafiki">Силы и графики</a>).</p>
+<h2>Как задать материал</h2>
+<ol>
+<li>Открой <strong>«Свойства детали»</strong> (значок информации у детали в дереве сцены).</li>
+<li>Выбери <strong>материал</strong> из списка: сталь, алюминий, латунь, медь, титан,
+ABS, PLA, нейлон, дерево, стекло.</li>
+<li>Рядом сразу показывается рассчитанная <strong>масса</strong> и плотность.</li>
+</ol>
+<p>Формула простая: <strong>масса = плотность × объём</strong>. Объём ASCAD берёт из геометрии
+детали, плотность — из материала.</p>
+<h2>Своя плотность</h2>
+<p>Если нужного материала нет в списке, выбери <strong>«Своя плотность»</strong> и впиши число
+(кг/м³) — масса пересчитается.</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Зачем это</div><p>Масса (и положение центра масс) нужны механизму, чтобы посчитать <strong>силы</strong>:
+какая нагрузка приходит на оси и подшипники, какой момент нужен мотору.</p>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Из Python</div><p><code>body.set_material(&quot;steel&quot;)</code> или <code>body.set_material(density=1200)</code>
+(см. <a href="#spravochnik-api">Справочник API</a>).</p>
+</div>
+
+</section>
+<section id="skruglenie-i-faska" class="doc">
+<h1>🔵 Скругление и фаска</h1>
+<p>Острые рёбра редко нужны: их <strong>скругляют</strong> (плавный переход) или снимают
+<strong>фаску</strong> (срез под углом). Это и красиво, и прочнее, и безопаснее.</p>
+<p><img src="img/fillet-chamfer.svg" alt="Острый угол, скругление и фаска">
+<em>Острый угол → скругление (дуга радиуса R) или фаска (срез)</em></p>
+<h2>Скругление (fillet)</h2>
+<p>Заменяет острое ребро дугой заданного <strong>радиуса</strong>.</p>
+<ol>
+<li>Выбери <strong>ребро</strong> (или несколько) на детали.</li>
+<li><strong>«Скругление»</strong> → задай радиус.</li>
+</ol>
+<h2>Фаска (chamfer)</h2>
+<p>Срезает ребро плоской площадкой.</p>
+<ol>
+<li>Выбери ребро.</li>
+<li><strong>«Фаска»</strong> → задай размер среза (можно симметричный или с двумя
+расстояниями).</li>
+</ol>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Сначала форма, потом скругления</div><p>Делай скругления/фаски <strong>в конце</strong>, когда основная форма готова. Так проще
+выбирать рёбра и перестраивать деталь.</p>
+</div>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Слишком большой радиус</div><p>Если радиус больше, чем позволяет геометрия (например, толще самой стенки),
+построение не получится — уменьши радиус.</p>
+</div>
+<p>Дальше → <a href="#vraschenie-obolochka-massivy">Вращение, оболочка, массивы</a></p>
+
+</section>
+<section id="step-i-proekty" class="doc">
+<h1>🔄 Импорт и экспорт</h1>
+<p>Деталями можно обмениваться с другими программами через формат <strong>STEP</strong> (<code>.step</code>,
+<code>.stp</code>) — это «общий язык» almost всех CAD-программ.</p>
+<h2>Импорт STEP</h2>
+<p><strong>Файл → «Импорт STEP…»</strong> добавляет геометрию из STEP-файла как деталь.</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Только геометрия</div><p>Из STEP приходит <strong>готовая форма</strong>, но <strong>без дерева операций</strong> (эскизов и
+выдавливаний внутри нет — только итоговая деталь). Это нормально: так устроен
+сам формат. Скруглять, резать и собирать такую деталь можно как обычно.</p>
+</div>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Чужие «родные» форматы</div><p>Файлы вроде <code>.sldprt</code> (SolidWorks) ASCAD <strong>не открывает</strong> — попроси прислать
+деталь в <strong>STEP</strong>, его понимают все.</p>
+</div>
+<h2>Экспорт STEP</h2>
+<p>Готовую деталь можно <strong>выгрузить в STEP</strong>, чтобы открыть её в другой CAD-
+программе или отправить на производство.</p>
+<h2>Обмен внутри ASCAD</h2>
+<ul>
+<li><strong>Проект целиком</strong> — один файл <code>.ascad.json</code> (см. <a href="#proekt-sohranenie-i-otkrytie">Проект — сохранение и открытие</a>).</li>
+<li><strong>Отдельная деталь</strong> — сохранить/загрузить, чтобы перенести между проектами.</li>
+</ul>
+
+<div class="callout callout-tip"><div class="callout-title">💡 3D-печать</div><p>Для печати обычно нужен STL/3MF; STEP — для обмена «умной» геометрией между
+инженерными программами.</p>
+</div>
+
+</section>
+<section id="ekzemplyary-i-sopryazheniya" class="doc">
+<h1>🧷 Сборка: экземпляры и сопряжения</h1>
+<p>Сборка — это когда несколько <strong>деталей</strong> ставятся вместе и соединяются, как в
+конструкторе. Из неподвижных получается узел, из подвижных — <strong>механизм</strong>.</p>
+<h2>Экземпляры</h2>
+<p>Деталь добавляется в сборку как <strong>экземпляр</strong> (копия). Одну деталь можно
+поставить несколько раз — все копии берутся из одного файла.</p>
+<ul>
+<li>Один экземпляр обычно делают <strong>закреплённым</strong> (<code>fixed</code>) — это «земля»,
+относительно которой двигаются остальные.</li>
+</ul>
+<h2>Сопряжения (связи)</h2>
+<p>Сопряжение — правило, как две детали держатся друг за друга. Выбираешь по грани
+на каждой детали:</p>
+<p><img src="img/mates.svg" alt="Концентричность, шарнир и ползун">
+<em>Концентричность (палец в отверстии), шарнир (только вращение), ползун (только скольжение)</em></p>
+<ul>
+<li><strong>Совпадение</strong> — грани прижаты друг к другу.</li>
+<li><strong>Концентричность</strong> — оси цилиндров совпадают (палец в отверстии): деталь
+может крутиться и скользить вдоль оси.</li>
+<li><strong>Расстояние</strong> — грани на заданном зазоре.</li>
+<li><strong>Revolute (шарнир)</strong> — как концентричность, но без скольжения: только
+вращение (чистая петля).</li>
+<li><strong>Prismatic (ползун)</strong> — только скольжение вдоль оси, без вращения.</li>
+<li><strong>Tangent (касание)</strong> — цилиндр катится/лежит на плоскости.</li>
+<li><strong>Fix</strong> — приклеить деталь на месте.</li>
+</ul>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Подбор связи по смыслу</div><p>ASCAD подсказывает подходящие связи карточками-намерениями и подсвечивает
+грани, которые можно соединить.</p>
+</div>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Если связь не строится</div><p>Деталь и проблемная грань подсветятся красным, а сверху появится понятное
+объяснение, почему связь не получилась — поправь выбор граней.</p>
+</div>
+<p>Дальше → <a href="#privody-i-zapusk">Приводы и запуск</a></p>
+
+</section>
+<section id="privody-i-zapusk" class="doc">
+<h1>⚙️ Приводы и запуск механизма</h1>
+<p>Если в сборке есть подвижные связи (концентричность, revolute, prismatic),
+её можно <strong>оживить</strong> — поставить мотор и посмотреть движение.</p>
+<p><img src="img/mechanism.svg" alt="Рычаг на опоре с мотором в шарнире">
+<em>Закреплённая опора + рычаг на шарнире; мотор вращает рычаг</em></p>
+<h2>Панель «Механизм»</h2>
+<ol>
+<li>В режиме сборки открой панель <strong>«Механизм»</strong>.</li>
+<li>Выбери <strong>сустав</strong> (подвижную связь), который крутит мотор.</li>
+<li>Задай <strong>скорость</strong>:
+<ul>
+<li>вращательный сустав → <strong>об/с</strong>;</li>
+<li>ползун (prismatic) → <strong>мм/с</strong>.</li>
+</ul>
+</li>
+<li>Нажми <strong>«Вычислить»</strong>, затем <strong>▶ Играть</strong> — деталь поедет. Есть пауза и
+ползунок прокрутки по времени.</li>
+</ol>
+<h2>Запись видео</h2>
+<p>Включи рычажок <strong>«Запись видео»</strong> — при проигрывании один цикл запишется в файл
+(удобно показать механизм в действии).</p>
+<h2>Периодическое колебание (синус)</h2>
+<p>Кроме постоянного вращения мотор умеет <strong>качаться по синусу</strong> на заданный угол —
+туда-обратно. В панели задаётся постоянная скорость; синус-колебание задаётся
+из Python:</p>
+<pre><code class="language-python"># ±30° с частотой 2 Гц:
+a.motor(hinge, oscillate_deg=30, freq_hz=2)
+# линейное колебание ±8 мм:
+a.motor(slider, oscillate_mm=8, freq_hz=1)
+</code></pre>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Кто кого двигает</div><p>Мотор задаёт <strong>направление</strong>: какая деталь движется, а какая — опора.
+По умолчанию двигается незакреплённая сторона связи.</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Дальше — силы</div><p>Когда движение есть, можно посчитать <strong>силы</strong> в механизме — реакции в
+шарнирах и нужный момент мотора. См. <a href="#sily-i-grafiki">Силы и графики</a>.</p>
+</div>
+<p>Дальше → <a href="#sily-i-grafiki">Силы и графики</a></p>
+
+</section>
+<section id="sily-i-grafiki" class="doc">
+<h1>💪 Силы и графики</h1>
+<p>Механизм можно не только подвигать, но и <strong>посчитать силы</strong> в нём: какая
+нагрузка приходит на шарниры (оси, подшипники) под действием тяжести деталей.
+Это помогает понять, выдержит ли конструкция, и подобрать мотор.</p>
+<p><img src="img/forces.svg" alt="Реакция в шарнире уравновешивает вес детали">
+<em>Тяжесть детали (m·g) создаёт реакцию в шарнире — ASCAD считает её в ньютонах</em></p>
+<h2>Что нужно сначала</h2>
+<p>Каждой детали задай <strong>материал</strong> — из него берётся масса (см.
+<a href="#material-i-massa">Материал и масса</a>). Без массы силу считать не из чего.</p>
+<h2>Кнопка «Силы»</h2>
+<ol>
+<li>Открой панель <strong>«Механизм»</strong>, выбери сустав и задай движение.</li>
+<li>Нажми <strong>«Силы»</strong>.</li>
+<li>Появится таблица <strong>пиковой реакции в каждом шарнире</strong> (в ньютонах, Н) —
+самая большая сила за весь цикл движения.</li>
+</ol>
+<p>Расчёт учитывает массы деталей и гравитацию: ASCAD находит силы, которые
+удерживают детали на их траектории.</p>
+<h2>Карточка «Графики»</h2>
+<p>Кнопка <strong>«Графики»</strong> открывает карточку с кривыми <strong>по времени</strong>:</p>
+<ul>
+<li>угол и угловая скорость сустава;</li>
+<li>положение детали (X / Y / Z);</li>
+<li><strong>реакция в шарнире (Н)</strong> и реактивный момент (Н·м).</li>
+</ul>
+<p>Выбираешь величину — видишь, как она меняется за цикл, и где пик.</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Единицы</div><p>Силы — в ньютонах (Н), моменты — в ньютон-метрах (Н·м), длины — в мм.</p>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Зачем</div><p>Реакции в шарнирах = нагрузка на оси: по ним подбирают подшипники и проверяют
+прочность. Это «инженерный» взгляд на твой механизм.</p>
+</div>
+
+</section>
+<section id="komponenty-shesterni-krepezh" class="doc">
+<h1>🧰 Библиотека компонентов</h1>
+<p>Некоторые детали не нужно рисовать с нуля — они уже есть в <strong>библиотеке</strong>:
+шестерни и стандартный крепёж. Задаёшь параметры — деталь строится сама.</p>
+<h2>Что есть</h2>
+<ul>
+<li><strong>Шестерни</strong> — задаёшь <strong>модуль</strong> (размер зуба) и <strong>число зубьев</strong>; ASCAD
+строит правильный эвольвентный профиль (по ГОСТ). Можно сделать прямозубую
+или винтовую.</li>
+<li><strong>Крепёж по ГОСТ:</strong>
+<ul>
+<li><strong>Шайба</strong> (ГОСТ 11371) — по диаметру.</li>
+<li><strong>Гайка шестигранная</strong> (ГОСТ 5915) — по размеру резьбы.</li>
+</ul>
+</li>
+</ul>
+<h2>Как вставить</h2>
+<ol>
+<li>Открой <strong>библиотеку компонентов</strong>.</li>
+<li>Выбери компонент и задай параметры (модуль/зубья, размер).</li>
+<li>Компонент появится как деталь — дальше с ним можно работать как с любой
+другой (резать, собирать, ставить в <a href="#ekzemplyary-i-sopryazheniya">сборку</a>).</li>
+</ol>
+
+<div class="callout callout-note"><div class="callout-title">📝 Под капотом — Python</div><p>Компоненты библиотеки строятся скриптом vcad-py. Его видно в панели Python —
+можно посмотреть, как параметры превращаются в геометрию, и поучиться.</p>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Зубчатая передача</div><p>Поставь две шестерни с одинаковым модулем, соедини оси концентричностью —
+и получишь зубчатую передачу для <a href="#privody-i-zapusk">механизма</a>.</p>
+</div>
+
+</section>
+<section id="1-sistemy-koordinat" class="doc">
+<h1>1. Системы координат — где что находится</h1>
+<p>Чтобы компьютер понял, <strong>куда</strong> поставить точку или <strong>в какую сторону</strong>
+вытянуть деталь, нужен «адрес» в пространстве. Этот адрес — три числа
+<strong>(x, y, z)</strong>. А правила, как читать эти три числа, и называются
+<strong>системой координат</strong>.</p>
+<p><img src="img/coords.svg" alt="Оси X, Y, Z и плоскость XY">
+<em>Три оси (X — вправо, Y — вглубь, Z — вверх) и плоскость XY с началом координат</em></p>
+<hr>
+<h2>🧭 Три оси: X, Y, Z</h2>
+<p>Представь угол комнаты. Из одного угла выходят три направления (см. рисунок
+выше):</p>
+<ul>
+<li><strong>X</strong> — вправо ◀▶</li>
+<li><strong>Y</strong> — вглубь экрана 🔙</li>
+<li><strong>Z</strong> — вверх 🔼</li>
+<li><strong>(0, 0, 0)</strong> — особая точка, <strong>начало координат</strong> (по-английски <em>origin</em>).
+Это «нулевой угол комнаты», от него всё измеряется.</li>
+</ul>
+
+<div class="callout callout-example"><div class="callout-title">🔎 Как читать адрес точки</div><p><code>(10, 0, 5)</code> значит: отойди на <strong>10</strong> вправо, на <strong>0</strong> вглубь и
+поднимись на <strong>5</strong> вверх. Единицы — <strong>миллиметры</strong> (мм).</p>
+</div>
+<hr>
+<h2>📄 Плоскости для рисования: XY, XZ, YZ</h2>
+<p>В ASCAD сначала рисуют <strong>плоскую фигуру</strong> (как на листе бумаги), а потом
+вытягивают её в объём. Лист можно положить тремя способами — это и есть
+три <strong>плоскости</strong>:</p>
+<p><img src="img/planes.svg" alt="Плоскости XY, XZ, YZ и куда растёт деталь">
+<em>XY — лист на полу, деталь вверх (z); XZ — на стене, вглубь (y); YZ — вбок (x)</em></p>
+<ul>
+<li><strong><code>XY</code> — «пол» 🟫</strong> — самая частая: лист лежит на полу, деталь растёт <strong>вверх</strong> (z).</li>
+<li><strong><code>XZ</code> — «стена перед тобой» 🟦</strong> — деталь растёт <strong>в глубину</strong> (y).</li>
+<li><strong><code>YZ</code> — «боковая стена» 🟥</strong> — деталь растёт <strong>вбок</strong> (x).</li>
+</ul>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Запомнить просто</div><p>В названии плоскости — <strong>две оси, по которым ты рисуешь</strong>. Третья,
+которой в названии нет, — это направление, <strong>куда вытягивается</strong> деталь.
+<code>XY</code> → рисуешь по X и Y, тянешь по <strong>Z</strong>.</p>
+</div>
+<p>В коде плоскость выбирают так:</p>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()
+body = scene.add_body(name=&quot;Пример&quot;)
+sk = body.start_sketch(plane=Plane.XY)   # ← кладём лист на пол
+</code></pre>
+<hr>
+<h2>🔩 Система координат грани (origin, normal, uAxis, vAxis)</h2>
+<p>Самое интересное. Когда ты рисуешь не на «полу», а <strong>прямо на стенке
+готовой детали</strong> (см. <a href="#5-eskiz-na-grani">5. Эскиз на грани</a>), у этой стенки есть своя
+маленькая система координат. ASCAD запоминает для неё <strong>4 вектора-стрелки</strong>:</p>
+<p><img src="img/face-cs.svg" alt="Система координат грани: origin, normal, uAxis, vAxis">
+<em>Четыре стрелки грани: origin (ноль), normal (наружу), uAxis (вправо), vAxis (вверх)</em></p>
+<table>
+<thead>
+<tr>
+<th>Вектор</th>
+<th>Простыми словами</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>origin</strong></td>
+<td>точка-«ноль» на самой грани (откуда начинаем мерить)</td>
+</tr>
+<tr>
+<td><strong>normal</strong></td>
+<td>стрелка «наружу» из грани — в эту сторону растёт деталь</td>
+</tr>
+<tr>
+<td><strong>uAxis</strong></td>
+<td>направление <strong>вправо</strong> на этой грани (её собственный «X»)</td>
+</tr>
+<tr>
+<td><strong>vAxis</strong></td>
+<td>направление <strong>вверх</strong> на этой грани (её собственный «Y»)</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout callout-question"><div class="callout-title">❓ Зачем это нужно?</div><p>Грань может быть наклонена как угодно. Эти 4 стрелки говорят ASCAD:
+«вот тут лежит мой лист бумаги и вот так он повёрнут». Без них рисунок
+на наклонной грани «соскользнул» бы на пол и деталь сломалась бы.
+ASCAD заполняет эти стрелки сам, когда ты тыкаешь в грань мышкой.</p>
+</div>
+<hr>
+<h2>✅ Проверь себя</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Вопросы</div><ol>
+<li>Какой адрес у начала координат?</li>
+<li>Ты нарисовал круг на плоскости <code>XY</code>. В какую сторону он вытянется?</li>
+<li>Что показывает стрелка <strong>normal</strong> у грани?</li>
+</ol>
+</div>
+<p><em>(Ответы: 1 — (0, 0, 0); 2 — вверх, по оси Z; 3 — куда «смотрит» грань
+наружу, в эту сторону пойдёт выдавливание.)</em></p>
+<p>Дальше → <a href="#2-pervaya-detal">2. Первая деталь</a></p>
+
+</section>
+<section id="2-pervaya-detal" class="doc">
+<h1>2. Первая деталь — готовые фигуры</h1>
+<p>Самый быстрый способ получить деталь — взять <strong>готовую объёмную фигуру</strong>
+(их называют <em>примитивы</em>) и задать ей размеры. Это как кубики LEGO:
+кубик, цилиндр, шар, конус.</p>
+<hr>
+<h2>🧱 Скелет любого скрипта</h2>
+<p>Каждый скрипт начинается одинаково:</p>
+<pre><code class="language-python">from vcad import Scene          # 1) берём «сцену» из библиотеки
+
+scene = Scene()                 # 2) создаём пустую сцену
+body  = scene.add_body(name=&quot;Деталь&quot;)   # 3) добавляем деталь
+# 4) ... тут строим деталь ...
+</code></pre>
+
+<div class="callout callout-note"><div class="callout-title">📝 Что такое `scene` и `body`</div><ul>
+<li><strong>scene</strong> (сцена) — это весь твой проект, всё, что на экране.</li>
+<li><strong>body</strong> — одна деталь внутри сцены. Деталей может быть несколько.</li>
+</ul>
+</div>
+<hr>
+<h2>🟦 Кубик</h2>
+<pre><code class="language-python">from vcad import Scene
+
+scene = Scene()
+body = scene.add_body(name=&quot;Кубик&quot;)
+body.cube(width=30, height=20, depth=10)
+</code></pre>
+<p><button class="ex-btn" data-example="cube">▶ Открыть пример: кубик</button></p>
+<ul>
+<li><code>width</code> — ширина (по X)</li>
+<li><code>height</code> — высота (по Y)</li>
+<li><code>depth</code> — глубина (по Z)</li>
+</ul>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Важно: фигура стоит в центре!</div><p>Примитив всегда появляется <strong>по центру начала координат (0,0,0)</strong>.
+Значит кубик высотой 20 занимает от <strong>−10</strong> до <strong>+10</strong>. Это пригодится,
+когда будешь складывать детали вместе.</p>
+</div>
+<hr>
+<h2>🥫 Цилиндр</h2>
+<pre><code class="language-python">from vcad import Scene
+
+scene = Scene()
+body = scene.add_body(name=&quot;Цилиндр&quot;)
+body.cylinder(radius=12, height=40)
+</code></pre>
+<ul>
+<li><code>radius</code> — радиус (половина толщины)</li>
+<li><code>height</code> — высота</li>
+</ul>
+<p><img src="img/cylinder.svg" alt="Цилиндр: радиус от центра до края и высота">
+<em>Цилиндр задают радиусом (от центра до края) и высотой</em></p>
+<hr>
+<h2>⚽ Шар и 🔺 конус</h2>
+<pre><code class="language-python">body.sphere(radius=15)                 # шар
+body.cone(radius=12, height=30)        # конус
+</code></pre>
+<hr>
+<h2>📍 Куда поставить деталь: <code>position</code></h2>
+<p>Если не хочешь, чтобы фигура стояла в центре, сдвинь её. Для этого есть
+<code>position=(x, y, z)</code> — это адрес из <a href="#1-sistemy-koordinat">1. Системы координат</a>:</p>
+<pre><code class="language-python">from vcad import Scene
+
+scene = Scene()
+body = scene.add_body(name=&quot;Башня&quot;)
+body.cube(width=20, height=20, depth=20, position=(0, 0, 0))    # внизу
+body.cube(width=14, height=14, depth=14, position=(0, 0, 18))   # выше
+body.cube(width=8,  height=8,  depth=8,  position=(0, 0, 31))   # ещё выше
+</code></pre>
+<p>Получится башенка из трёх кубиков, как пирамидка! 🗼</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Совет</div><p>Меняй числа и нажимай <strong>Запустить</strong> — деталь сразу перерисовывается.
+Так понять размеры проще всего: подвигал — увидел.</p>
+</div>
+<hr>
+<h2>✅ Задание</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Собери снеговика ⛄</div><p>Поставь друг на друга три шара разного радиуса (большой внизу).
+Подсказка: используй <code>sphere(radius=...)</code> и <code>position=(0, 0, ...)</code>.</p>
+</div>
+<p>Дальше → <a href="#3-eskiz-i-vydavlivanie">3. Эскиз и выдавливание</a></p>
+
+</section>
+<section id="3-eskiz-i-vydavlivanie" class="doc">
+<h1>3. Эскиз и выдавливание</h1>
+<p>Готовых фигур мало для настоящих деталей. Главный приём инженера такой:</p>
+<ol>
+<li><strong>Эскиз</strong> — нарисовать плоскую фигуру на листе (на <a href="#1-sistemy-koordinat">плоскости</a>).</li>
+<li><strong>Выдавливание</strong> (<em>extrude</em>) — «вытянуть» эту фигуру в объём, как
+выдавливают тесто формочкой или пластилин через шприц.</li>
+</ol>
+<p><img src="img/extrude.svg" alt="Плоский эскиз выдавливается в объём">
+<em>Плоский эскиз → выдавили на высоту → объёмная деталь</em></p>
+<hr>
+<h2>✏️ Шаг 1. Создаём эскиз</h2>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()
+body = scene.add_body(name=&quot;Пластина&quot;)
+
+sk = body.start_sketch(plane=Plane.XY)   # лист на полу
+</code></pre>
+<p><code>sk</code> — это наш «лист бумаги». Теперь рисуем на нём.</p>
+<hr>
+<h2>✏️ Шаг 2. Рисуем фигуру на эскизе</h2>
+<h3>Прямоугольник от центра</h3>
+<pre><code class="language-python">sk.rectangle_centered(center=(0, 0), width=40, height=25)
+</code></pre>
+<h3>Круг</h3>
+<pre><code class="language-python">sk.circle(center=(0, 0), radius=15)
+</code></pre>
+<h3>Другие фигуры</h3>
+<pre><code class="language-python">sk.polygon(center=(0, 0), radius=15, sides=6)   # шестиугольник
+sk.line(start=(0, 0), end=(20, 10))             # отрезок
+sk.arc(center=(0, 0), radius=10, start_angle=0, end_angle=90)  # дуга
+</code></pre>
+
+<div class="callout callout-note"><div class="callout-title">📝 Координаты на эскизе — плоские (x, y)</div><p>На листе всего две оси, поэтому точки задаются двумя числами: <code>(x, y)</code>.
+Третью координату (высоту) даст выдавливание.</p>
+</div>
+<hr>
+<h2>✏️ Шаг 3. Выдавливаем</h2>
+<pre><code class="language-python">body.extrude(sk, height=8)
+</code></pre>
+<p>Всё! Плоский прямоугольник превратился в плитку толщиной 8 мм.</p>
+<h3>Полный рабочий пример</h3>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()
+body = scene.add_body(name=&quot;Шайба&quot;)
+
+sk = body.start_sketch(plane=Plane.XY)
+sk.circle(center=(0, 0), radius=20)
+body.extrude(sk, height=5)
+</code></pre>
+<p>Получился «блинчик» — круг радиусом 20, толщиной 5. 🥞</p>
+<hr>
+<h2>⚙️ Полезные настройки выдавливания</h2>
+<pre><code class="language-python"># вытянуть в ОБЕ стороны от листа
+body.extrude(sk, height=5, height_backward=5)
+
+# сделать «пирамидку» — сузить кверху (taper меньше 1)
+body.extrude(sk, height=20, taper=0.5)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>height</code></td>
+<td>на сколько вытянуть вперёд (по normal)</td>
+</tr>
+<tr>
+<td><code>height_backward</code></td>
+<td>на сколько вытянуть назад</td>
+</tr>
+<tr>
+<td><code>taper</code></td>
+<td><code>1</code> — ровно, <code>&lt;1</code> — сужается, <code>&gt;1</code> — расширяется</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>✅ Задание</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Звезда ⭐</div><p>Нарисуй на <code>XY</code> шестиугольник (<code>polygon</code>, <code>sides=6</code>) и выдави на 10 мм.
+Потом поменяй <code>sides</code> на 3, 5, 8 — посмотри, что получится.</p>
+</div>
+<p>Дальше → <a href="#4-otverstiya-i-vyrezy">4. Отверстия и вырезы</a></p>
+
+</section>
+<section id="4-otverstiya-i-vyrezy" class="doc">
+<h1>4. Отверстия и вырезы</h1>
+<p>Выдавливание <strong>добавляет</strong> материал. А чтобы сделать <strong>отверстие</strong>, нужно
+наоборот — <strong>убрать</strong> материал. Этот приём называется <strong>вырез</strong> (<em>cut</em>).</p>
+<p>Идея простая: рисуешь фигуру отверстия и «продавливаешь» её сквозь деталь,
+как вырубка печенья формочкой. 🍪</p>
+<p><img src="img/hole-steps.svg" alt="Деталь → рисуем круг → вырезали отверстие">
+<em>Деталь → рисуем круг → продавливаем сквозь = отверстие</em></p>
+<p><button class="ex-btn" data-example="plate-hole">▶ Открыть пример: пластина с отверстием</button></p>
+<hr>
+<h2>🕳️ Отверстие насквозь</h2>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()
+body = scene.add_body(name=&quot;Шайба с отверстием&quot;)
+
+# 1) основная деталь — диск
+base = body.start_sketch(plane=Plane.XY)
+base.circle(center=(0, 0), radius=20)
+body.extrude(base, height=6)
+
+# 2) отверстие — круг поменьше, но ВЫРЕЗАЕМ
+hole = body.start_sketch(plane=Plane.XY)
+hole.circle(center=(0, 0), radius=8)
+body.cut(hole, height=6)
+</code></pre>
+<p>Получилась шайба (колечко). Вместо <code>extrude</code> мы написали <strong><code>cut</code></strong> — и
+тем же движением не добавили, а убрали материал.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 extrude и cut — близнецы</div><p>У них одинаковые настройки (<code>height</code>, <code>height_backward</code>). Разница одна:
+<code>extrude</code> <strong>добавляет</strong>, <code>cut</code> <strong>вычитает</strong>.</p>
+</div>
+<hr>
+<h2>📐 Несколько отверстий</h2>
+<p>Можно нарисовать на одном эскизе сразу несколько фигур — вырежутся все:</p>
+<pre><code class="language-python">holes = body.start_sketch(plane=Plane.XY)
+holes.circle(center=(-12, 0), radius=3)
+holes.circle(center=( 12, 0), radius=3)
+holes.circle(center=(0,  12), radius=3)
+holes.circle(center=(0, -12), radius=3)
+body.cut(holes, height=6)
+</code></pre>
+<p>Четыре крепёжных отверстия за раз! 🔩</p>
+<hr>
+<h2>⚠️ Частая ошибка: отверстие «не достаёт»</h2>
+<p>Помни из <a href="#2-pervaya-detal">2. Первая деталь</a>: фигуры стоят по центру. Если деталь идёт
+от 0 до 6 по высоте, то и вырез должен проходить через эти же 6 мм. Чтобы
+точно пробить насквозь, делают вырез <strong>чуть больше</strong> и тянут в обе стороны:</p>
+<pre><code class="language-python">body.cut(hole, height=10, height_backward=10)   # с запасом — точно насквозь
+</code></pre>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Совет</div><p>Если отверстия нет — почти всегда вырез просто «не доехал» до материала.
+Увеличь <code>height</code> или добавь <code>height_backward</code>.</p>
+</div>
+<hr>
+<h2>✅ Задание</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Пуговица 🔘</div><p>Сделай диск радиусом 15, толщиной 4, и пробей в нём 2 или 4 отверстия
+радиусом 1.5 для ниток.</p>
+</div>
+<p>Дальше → <a href="#5-eskiz-na-grani">5. Эскиз на грани</a></p>
+
+</section>
+<section id="5-eskiz-na-grani" class="doc">
+<h1>5. Эскиз на грани</h1>
+<p>Пока мы рисовали только на трёх «главных» плоскостях (пол и две стены).
+Но настоящая сила ASCAD — рисовать <strong>прямо на стенке уже готовой детали</strong>.
+Например: сделать коробку, а потом нарисовать кнопку на её верхней грани.</p>
+<p>Тут нам и пригодится <strong>система координат грани</strong> из <a href="#1-sistemy-koordinat">1. Системы координат</a>.</p>
+<hr>
+<h2>🤔 Зачем грани своя система координат?</h2>
+<p>Представь, что ты приклеил листочек на наклонную крышу домика. Чтобы
+рисовать на этом листочке, нужно знать:</p>
+<p><img src="img/face-cs.svg" alt="Система координат грани: origin, normal, uAxis, vAxis">
+<em>normal — куда торчит грань (туда растёт деталь); uAxis/vAxis — «вправо/вверх» на грани</em></p>
+<ul>
+<li><strong>origin</strong> — где у листочка «ноль»;</li>
+<li><strong>uAxis</strong> — где на нём «вправо»;</li>
+<li><strong>vAxis</strong> — где «вверх»;</li>
+<li><strong>normal</strong> — куда торчит наружу.</li>
+</ul>
+<p>Эти 4 стрелки превращают любую наклонную грань в обычный ровный лист, на
+котором удобно рисовать. ASCAD считает их <strong>сам</strong>.</p>
+<hr>
+<h2>🖱️ Как это делается на практике</h2>
+<p>Чаще всего эскиз на грани создают <strong>мышкой</strong>, а не вручную в коде:</p>
+<ol>
+<li>Построй деталь (например, коробку).</li>
+<li><strong>Кликни по нужной грани</strong> в 3D-окне.</li>
+<li>Нажми <strong>«Эскиз в деталь»</strong> (или начни новый эскиз) — ASCAD сам положит
+лист на эту грань и запомнит её систему координат.</li>
+<li>Рисуй фигуру и выдави/вырежи как обычно.</li>
+</ol>
+
+<div class="callout callout-note"><div class="callout-title">📝 Связь с кодом</div><p>Когда ASCAD превращает твою деталь обратно в скрипт (кнопка
+<strong>«Деталь в код»</strong>), он записывает систему координат грани в код вот так:</p>
+<pre><code class="language-python">sk = body.start_sketch(
+    plane=&quot;CUSTOM&quot;,
+    face_coord_system={
+        &quot;origin&quot;: (0, 0, 10),   # точка-ноль на грани
+        &quot;normal&quot;: (0, 0, 1),    # куда торчит грань
+        &quot;uAxis&quot;:  (1, 0, 0),    # «вправо» на грани
+        &quot;vAxis&quot;:  (0, 1, 0),    # «вверх» на грани
+    },
+)
+sk.circle(center=(0, 0), radius=5)
+body.extrude(sk, height=3)      # кнопка вырастет по normal
+</code></pre>
+<p>Слово <strong>CUSTOM</strong> значит «особая плоскость — вот её 4 стрелки».</p>
+</div>
+<hr>
+<h2>🏗️ Пример: коробка с кнопкой сверху</h2>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()
+body = scene.add_body(name=&quot;Коробка с кнопкой&quot;)
+
+# 1) коробка: квадрат 40×40, высота 10
+base = body.start_sketch(plane=Plane.XY)
+base.rectangle_centered(center=(0, 0), width=40, height=40)
+body.extrude(base, height=10)
+
+# 2) кнопка на ВЕРХНЕЙ грани (она на высоте z = 10, смотрит вверх)
+top = body.start_sketch(
+    plane=&quot;CUSTOM&quot;,
+    face_coord_system={
+        &quot;origin&quot;: (0, 0, 10),
+        &quot;normal&quot;: (0, 0, 1),
+        &quot;uAxis&quot;:  (1, 0, 0),
+        &quot;vAxis&quot;:  (0, 1, 0),
+    },
+)
+top.circle(center=(0, 0), radius=6)
+body.extrude(top, height=3)   # кнопка торчит на 3 мм вверх
+</code></pre>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Почему это важно</div><p>Если убрать <code>face_coord_system</code>, ASCAD не поймёт, где лежит грань, и
+кнопка «съедет» не туда, а деталь сломается. Поэтому, когда строишь на
+грани мышкой, <strong>не удаляй</strong> этот блок из сгенерированного кода.</p>
+</div>
+<hr>
+<h2>✅ Задание</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Поставь трубу на крышу</div><p>Сделай коробку, кликни по верхней грани, начни на ней эскиз, нарисуй
+маленький круг и выдави его — получится труба на домике. 🏠</p>
+</div>
+<p>Дальше → <a href="#6-otladchik">6. Отладчик</a></p>
+
+</section>
+<section id="6-otladchik" class="doc">
+<h1>6. Отладчик — смотрим, как деталь растёт по шагам</h1>
+<p>Обычно ты жмёшь <strong>Запустить</strong>, и сразу появляется готовая деталь. Но иногда
+хочется понять: <em>что делает каждая строчка кода?</em> Или найти, где модель
+«сломалась». Для этого есть <strong>отладчик</strong> — он выполняет скрипт <strong>по одному
+шагу</strong> и после каждого шага дорисовывает только то, что построено к этому
+моменту. Как будто смотришь рецепт по пунктам, а не сразу готовое блюдо. 🍰</p>
+<hr>
+<h2>🎛️ Кнопки</h2>
+<p>В шапке редактора рядом с <strong>▶ Запустить</strong>:</p>
+<p><img src="img/debugger.svg" alt="Кнопки отладчика: Отладка, затем Шаг / Дальше / Стоп">
+<em>«🐞 Отладка» запускает пошаговый режим; затем — Шаг, Дальше, Стоп</em></p>
+<ul>
+<li><strong>🐞 Отладка</strong> — начать. Скрипт «замирает» на первой строке.</li>
+<li><strong>⏭ Шаг</strong> — выполнить <strong>одну</strong> строку (один оператор). После шага во
+вьюпорте видно, что добавилось.</li>
+<li><strong>⏩ Дальше</strong> — выполнять подряд <strong>до точки останова</strong> (см. ниже) или до
+конца скрипта.</li>
+<li><strong>⏹ Стоп</strong> — закончить отладку.</li>
+</ul>
+<p>Текущая строка (на которой пауза) <strong>подсвечивается</strong> в редакторе.</p>
+<hr>
+<h2>🔴 Точка останова (breakpoint)</h2>
+<p>Точка останова — это метка «остановись здесь». Поставь её, чтобы быстро
+домотать до интересного места, не нажимая «Шаг» сто раз.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Как поставить</div><p><strong>Кликни мышкой в узкую полоску слева от номеров строк</strong> — появится
+красная точка 🔴. Клик ещё раз — снять. Потом жми <strong>⏩ Дальше</strong>, и
+выполнение остановится прямо перед этой строкой.</p>
+</div>
+<p><img src="img/breakpoint.svg" alt="Красная точка останова на строке кода">
+<em>Красная точка слева от номера строки — «Дальше» остановится прямо тут</em></p>
+<hr>
+<h2>👀 Что значит «рисуется только выполненное»</h2>
+<p>Помни <a href="#2-pervaya-detal">золотое правило</a>: сцена строится по кусочкам —
+сначала <code>scene = Scene()</code>, потом детали и операции добавляются по очереди.
+Отладчик показывает ровно это:</p>
+<table>
+<thead>
+<tr>
+<th>После шага</th>
+<th>Что на экране</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scene = Scene()</code></td>
+<td>пусто</td>
+</tr>
+<tr>
+<td><code>body = scene.add_body(...)</code></td>
+<td>пустая деталь</td>
+</tr>
+<tr>
+<td><code>body.extrude(sk, ...)</code></td>
+<td>появилась первая деталь</td>
+</tr>
+<tr>
+<td>следующий <code>cut</code></td>
+<td>в детали прорезалось отверстие</td>
+</tr>
+</tbody>
+</table>
+<p>Так сразу видно, <strong>какая строка что делает</strong>. 🔍</p>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Один нюанс</div><p>Цикл <code>for</code> или вызов функции отладчик выполняет <strong>за один шаг</strong> целиком
+(внутрь не заходит). Для большинства учебных скриптов это нормально —
+одна строка обычно = одна деталь или операция.</p>
+</div>
+<hr>
+<h2>✅ Задание</h2>
+
+<div class="callout callout-question"><div class="callout-title">❓ Разбери чужой скрипт</div><p>Возьми готовый скрипт (например, из урока <a href="#4-otverstiya-i-vyrezy">4. Отверстия и вырезы</a>),
+нажми <strong>🐞 Отладка</strong> и прожми <strong>⏭ Шаг</strong> до конца. На каком шаге появляется
+отверстие? Поставь туда 🔴 точку останова и проверь кнопкой <strong>⏩ Дальше</strong>.</p>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Зачем это в жизни</div><p>Так инженеры ищут ошибки: если деталь получилась не такой, проходишь по
+шагам и смотришь, <strong>на каком именно</strong> всё пошло не так.</p>
+</div>
+<p>Назад в <a href="#oglavlenie">Оглавление</a></p>
+
+</section>
+<section id="7-vneshniy-zapusk-cursor" class="doc">
+<h1>7. Внешний запуск — пишем код в своём редакторе</h1>
+<p>Обычно скрипт набирают прямо в ASCAD, в правой панели <strong>Python</strong>. Но если
+тебе удобнее писать код в <strong>своём редакторе</strong> (например, в <strong>Cursor</strong> или
+VS Code, где есть умные подсказки и ИИ-помощник) — можно делать так: пишешь
+скрипт у себя, нажимаешь «запустить», а <strong>деталь строится в браузере</strong>, в
+открытой вкладке ASCAD.</p>
+<p>Это и называется <strong>внешний запуск</strong>.</p>
+
+<div class="callout callout-note"><div class="callout-title">📝 Зачем это нужно</div><p>Твой любимый редактор + автодополнение + ИИ-помощник остаются с тобой, а
+ASCAD служит «окном», в котором сразу видно результат. Каждый раз, когда
+ты сохраняешь файл, модель пересобирается сама.</p>
+</div>
+<hr>
+<h2>🔗 Как это работает: ключ-связка</h2>
+<p>Чтобы твой скрипт «нашёл» именно твою вкладку (а не чужую), используется
+<strong>ключ-связка</strong> — короткий код вроде <code>BF7S-WMXM</code>. Один и тот же ключ стоит
+и в браузере, и в команде запуска. Только так модель прилетит именно к тебе.</p>
+<pre><code>твой редактор ──(скрипт)──▶ сервер ──(по ключу)──▶ твоя вкладка ASCAD
+</code></pre>
+<hr>
+<h2>🛠️ Настройка — один раз</h2>
+<p><strong>1. Установи команду <code>vcad-run</code></strong> (нужен Python на компьютере). В терминале:</p>
+<pre><code class="language-bash">pip install -e vcad-py
+</code></pre>
+<p><strong>2. Включи приём в ASCAD.</strong> Открой правую панель <strong>Python</strong>, нажми кнопку
+с антенной 📡 в её шапке. В окошке:</p>
+<ul>
+<li>поставь галочку <strong>«Слушать внешние запуски»</strong> (рядом загорится «● приём включён»);</li>
+<li>скопируй <strong>ключ-связку</strong>;</li>
+<li>там же есть готовая команда — её можно скопировать целиком.</li>
+</ul>
+<hr>
+<h2>▶️ Запуск</h2>
+<p>В своём редакторе сохрани скрипт (например, <code>part.py</code>) — обязательно с
+<strong>переменной <code>scene</code> на верхнем уровне</strong>, её и ищет <code>vcad-run</code>:</p>
+<pre><code class="language-python">from vcad import Scene
+
+scene = Scene()                      # ← важно: на верхнем уровне
+body = scene.add_body(name=&quot;Деталь&quot;)
+sk = body.start_sketch(plane=&quot;XY&quot;)
+sk.rectangle(corner=(-20, -15), width=40, height=30)
+body.extrude(sk, height=15)
+</code></pre>
+<p>Затем в терминале:</p>
+<pre><code class="language-bash">vcad-run part.py --url https://ascad3d.ru/api --key BF7S-WMXM --watch
+</code></pre>
+<ul>
+<li><code>--url</code> — адрес из окошка (на сайте <code>https://ascad3d.ru/api</code>);</li>
+<li><code>--key</code> — твой ключ-связка;</li>
+<li><code>--watch</code> — следить за файлом: при каждом сохранении деталь пересоберётся.</li>
+</ul>
+<p>Если всё хорошо, увидишь:</p>
+<pre><code>✓ pushed → 1 tab(s)
+</code></pre>
+<p>— и деталь появится в браузере. Меняй размеры, сохраняй файл — модель будет
+обновляться сама.</p>
+
+<div class="callout callout-example"><div class="callout-title">🔎 Несколько деталей</div><p>Каждый <code>scene.add_body(...)</code> создаёт новую деталь в той же сцене:</p>
+<pre><code class="language-python">tower = scene.add_body(name=&quot;Башня&quot;)
+tower.cylinder(radius=12, height=60, position=(60, 0, 30))
+</code></pre>
+</div>
+<hr>
+<h2>🆘 Если не работает</h2>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ `pushed, but no listening tab` (доставлено 0 вкладок)</div><p>Сервер скрипт принял, но ни одна вкладка его не слушает под этим ключом.
+Проверь:</p>
+<ul>
+<li>в браузере включена галочка <strong>«Слушать внешние запуски»</strong>;</li>
+<li><strong>ключ во вкладке совпадает</strong> с тем, что в команде (если нажимал «Новый
+ключ» — он сменился, возьми текущий);</li>
+<li>адрес <code>--url</code> — именно <code>https://ascad3d.ru/api</code> (а не другой).</li>
+</ul>
+</div>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ `no Scene found`</div><p>В скрипте нет переменной <code>scene</code> на верхнем уровне. Если ты завернул код в
+функцию <code>def main(): ...</code>, переменная <code>scene</code> оказывается «спрятанной» —
+вынеси <code>scene = Scene()</code> наружу.</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Свой сервер поднимать не нужно</div><p>На сайте <code>ascad3d.ru</code> всё уже работает. Локально (для разработки) адрес
+будет <code>http://localhost:7910</code>, и тогда сервис-посредник нужно запустить
+самому.</p>
+</div>
+<hr>
+<p><strong>Связанные уроки:</strong> <a href="#2-pervaya-detal">2. Первая деталь</a> · <a href="#6-otladchik">6. Отладчик</a> · Шпаргалка</p>
+
+</section>
+<section id="spravochnik-api" class="doc">
+<h1>📖 Справочник API vcad-py</h1>
+<p>Все основные команды библиотеки <code>vcad</code>. Подробные объяснения — в уроках;
+здесь — краткая шпаргалка с сигнатурами. Координаты точек принимаются как
+<code>(x, y)</code> или <code>Point2D</code>; углы — в градусах, длины — в мм.</p>
+<pre><code class="language-python">from vcad import Scene, Plane
+scene = Scene()
+</code></pre>
+<h2>Scene — сцена (деталь)</h2>
+<ul>
+<li><code>scene.add_body(name=&quot;Body&quot;) -&gt; Body</code> — добавить деталь.</li>
+<li><code>scene.bodies -&gt; list[Body]</code> — список тел.</li>
+<li><code>scene.boolean(...)</code> — булева операция между деталями.</li>
+<li><code>scene.save(path)</code> / <code>Scene.load(path)</code> — сохранить / открыть.</li>
+<li><code>scene.to_dict()</code> / <code>scene.to_json(indent=2)</code> — сериализация.</li>
+</ul>
+
+<div class="callout callout-note"><div class="callout-title">📝 Золотое правило</div><p>К концу скрипта должна существовать переменная <code>scene</code> — её рисует ASCAD.</p>
+</div>
+<h2>Body — деталь</h2>
+<p><strong>Свойства:</strong> <code>body.id</code>, <code>body.name</code>, <code>body.color</code>,
+<code>body.set_color(&quot;#rrggbb&quot;)</code>, <code>body.set_material(&quot;steel&quot;)</code> /
+<code>body.set_material(density=1200)</code> (материал → масса, см. <a href="#material-i-massa">Материал и масса</a>).</p>
+<h3>Примитивы (готовые детали)</h3>
+<ul>
+<li><code>body.cube(width=1, height=1, depth=1)</code></li>
+<li><code>body.cylinder(radius=0.5, height=1)</code></li>
+<li><code>body.sphere(radius=0.5)</code></li>
+<li><code>body.cone(radius=0.5, height=1)</code></li>
+</ul>
+<h3>Эскиз и операции</h3>
+<ul>
+<li><code>body.start_sketch(plane=Plane.XY, offset=0.0) -&gt; Sketch</code> — начать эскиз.</li>
+<li><code>body.extrude(sketch, height, height_backward=0, draft_angle=0, twist_angle=0, is_cut=False)</code> — выдавить.</li>
+<li><code>body.cut(sketch, ...)</code> — вырез (то же, но вычитает).</li>
+<li><code>body.revolve(sketch, axis_start, axis_end, angle=360, cut=False)</code> — вращение.</li>
+<li><code>body.sweep(sketch, path_sketch, ...)</code> / <code>body.sweep_cut(...)</code> — свип по траектории.</li>
+<li><code>body.sweep_helix(sketch, ...)</code> — свип по спирали (пружины, резьба).</li>
+<li><code>body.loft(sections, ...)</code> — лофт между сечениями.</li>
+<li><code>body.shell(faces, thickness)</code> — оболочка (полая деталь).</li>
+<li><code>body.fillet_3d(edges=..., faces=..., radius=R)</code> — скругление рёбер.</li>
+<li><code>body.chamfer_3d(edges=..., distance1=D, distance2=None)</code> — фаска.</li>
+<li><code>body.linear_pattern(count, spacing, direction)</code> — линейный массив.</li>
+<li><code>body.circular_pattern(count, axis_start, axis_end, ...)</code> — круговой массив.</li>
+<li><code>body.mirror(...)</code> — зеркало.</li>
+<li><code>body.import_step(path)</code> — импорт STEP.</li>
+</ul>
+<h3>Имена граней/рёбер (для сборки)</h3>
+<ul>
+<li><code>body.name_face(name, ...)</code> / <code>body.name_edge(name, ...)</code> — пометить грань/ребро
+именем, чтобы сослаться на него в сборке.</li>
+</ul>
+<h2>Sketch — эскиз</h2>
+<p><strong>Элементы</strong> (возвращают id): <code>point</code>, <code>line</code>, <code>circle</code>, <code>arc</code>,
+<code>rectangle</code>, <code>rectangle_centered</code>, <code>polygon(center, radius, sides)</code>,
+<code>ellipse</code>, <code>slot(start, end, radius)</code>, <code>polyline(points)</code>, <code>spline(points)</code>,
+<code>text(position, text, height=10)</code> (см. <a href="#tekst-v-eskize">Текст в эскизе</a>), <code>dimension(...)</code>.</p>
+<p><strong>Ограничения</strong> (см. <a href="#razmery-i-ogranicheniya">Размеры и ограничения</a>): <code>horizontal</code>, <code>vertical</code>,
+<code>fixed</code>, <code>parallel</code>, <code>perpendicular</code>, <code>equal</code>, <code>tangent</code>, <code>concentric</code>,
+<code>symmetric(e1, e2, axis)</code>, <code>coincident(p1, p2)</code>, <code>distance(p1, p2, value)</code>,
+<code>angle(e1, e2, value)</code>, <code>radius(element, value)</code>, <code>point_on_line</code>,
+<code>point_on_circle</code>, <code>midpoint</code>. <code>construction(*ids)</code> — пометить как
+вспомогательную геометрию.</p>
+<pre><code class="language-python">body = scene.add_body(name=&quot;Планка&quot;)
+sk = body.start_sketch(plane=Plane.XY)
+sk.rectangle((0, 0), 40, 10)
+body.extrude(sk, height=5)
+</code></pre>
+<h2>Assembly — сборка</h2>
+<pre><code class="language-python">from vcad import Assembly
+a = Assembly(name=&quot;Узел&quot;)
+</code></pre>
+<ul>
+<li><code>a.import_part(path, name=None, fixed=False, translation=..., rotation=...) -&gt; PartInstance</code></li>
+<li><code>a.instances</code> / <code>a.mates</code> — списки.</li>
+<li><strong>Сопряжения</strong> (см. <a href="#ekzemplyary-i-sopryazheniya">Экземпляры и сопряжения</a>):
+<code>a.mate_fix(inst)</code>, <code>a.mate_coincident(face_a, face_b, flip=False)</code>,
+<code>a.mate_distance(face_a, face_b, value)</code>, <code>a.mate_concentric(...)</code>,
+<code>a.mate_revolute(...)</code>, <code>a.mate_prismatic(...)</code>, <code>a.mate_tangent(...)</code>,
+<code>a.mate_edge_coincident(...)</code>, <code>a.mate_point_coincident(...)</code>,
+<code>a.mate_point_on_edge(...)</code>. Грань задаётся как <code>(instance, face_id)</code>,
+<code>(instance, &quot;имя_грани&quot;)</code> или <code>FaceRefDoc</code>.</li>
+<li><code>a.save(path)</code> / <code>Assembly.load(path)</code>.</li>
+</ul>
+<h3>Мотор (привод)</h3>
+<p><code>a.motor(mate_id, *, ...)</code> — ровно один из режимов:</p>
+<ul>
+<li><code>rev_per_sec=N</code> — постоянное вращение (об/с);</li>
+<li><code>angle=&quot;f(time)&quot;</code> — угол в радианах как функция времени, напр. <code>&quot;2*pi*time&quot;</code>;</li>
+<li><code>mm_per_sec=N</code> — постоянное линейное (для prismatic-связи);</li>
+<li><code>distance=&quot;f(time)&quot;</code> — линейное перемещение, мм;</li>
+<li><code>oscillate_deg=A</code> — <strong>синус-колебание ±A°</strong> (доп. <code>freq_hz</code>, <code>phase_deg</code>);</li>
+<li><code>oscillate_mm=A</code> — линейное колебание ±A мм.
+<code>mover=</code> — какая деталь движется (по умолчанию незакреплённая сторона).</li>
+</ul>
+<pre><code class="language-python">hinge = a.mate_concentric((base, &quot;ось&quot;), (arm, &quot;втулка&quot;))
+a.motor(hinge, oscillate_deg=30, freq_hz=2, mover=arm)   # качается ±30°
+</code></pre>
+<h2>PartInstance — экземпляр в сборке</h2>
+<p><code>inst.id</code>, <code>inst.name</code>, <code>inst.path</code>, <code>inst.set_transform(...)</code>,
+<code>inst.fix()</code>, <code>inst.face_at(...)</code>.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Запуск</div><p>Открой правую панель <strong>Python</strong>, вставь скрипт, нажми <strong>Запустить</strong> — деталь
+или сборка появится во вьюпорте. Сборку оживляет панель «Механизм»
+(см. <a href="#privody-i-zapusk">Приводы и запуск</a>).</p>
+</div>
+
+</section>
+<section id="rezhimy-i-komnaty" class="doc">
+<h1>👥 Совместная работа</h1>
+<p>ASCAD умеет работать <strong>вместе</strong> — для уроков в классе и совместных проектов.
+Режим выбирается в меню «<strong>?</strong>» в углу.</p>
+<h2>Четыре режима</h2>
+<ul>
+<li><strong>Работа</strong> — обычный одиночный режим (по умолчанию).</li>
+<li><strong>Учитель</strong> — ты ведущий: создаёшь <strong>комнату</strong>, и всё, что ты делаешь,
+<strong>транслируется ученикам</strong> в реальном времени.</li>
+<li><strong>Ученик</strong> — подключаешься к комнате учителя и <strong>смотришь</strong> его экран вживую.
+В любой момент можно «забрать к себе» состояние и продолжить самостоятельно
+(это переключит тебя в режим «Работа» со своей копией).</li>
+<li><strong>Совместно</strong> — все участники <strong>равноправно</strong> редактируют одну сцену
+(последнее изменение побеждает, без блокировок).</li>
+</ul>
+<h2>Комнаты и чат</h2>
+<ul>
+<li>Учитель создаёт комнату; ученики присоединяются по ней.</li>
+<li>Есть <strong>чат</strong> комнаты: имена участников, список присутствующих, история
+сообщений, модерация.</li>
+</ul>
+
+<div class="callout callout-note"><div class="callout-title">📝 Аккаунт нужен только ведущему</div><p>Чтобы <strong>создать</strong> комнату (режим «Учитель»), нужен аккаунт. Ученики
+подключаются как гости — регистрация им не требуется.</p>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Урок в классе</div><p>Учитель показывает построение детали на «Учителе», класс смотрит на
+«Ученике», затем каждый забирает деталь к себе и доделывает сам.</p>
+</div>
+
+</section>
+<section id="goryachie-klavishi" class="doc">
+<h1>⌨️ Горячие клавиши</h1>
+<p>Маленькая шпаргалка, чтобы работать быстрее.</p>
+<h2>Везде</h2>
+<table>
+<thead>
+<tr>
+<th>Клавиши</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ctrl + Z</strong></td>
+<td>Отменить</td>
+</tr>
+<tr>
+<td><strong>Ctrl + Y</strong> / <strong>Ctrl + Shift + Z</strong></td>
+<td>Повторить</td>
+</tr>
+<tr>
+<td><strong>Esc</strong></td>
+<td>Закрыть окно / выйти из инструмента</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout callout-note"><div class="callout-title">📝 Откат — отдельный для каждого режима</div><p>У части, эскиза и сборки <strong>своя история</strong> отмены. Отмена в эскизе не трогает
+то, что ты делал в сборке, и наоборот.</p>
+</div>
+<h2>3D-вид</h2>
+<table>
+<thead>
+<tr>
+<th>Действие</th>
+<th>Как</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Вращать</td>
+<td>средняя/правая кнопка мыши</td>
+</tr>
+<tr>
+<td>Зум</td>
+<td>колесо мыши</td>
+</tr>
+<tr>
+<td>Сдвиг</td>
+<td>Shift + средняя кнопка</td>
+</tr>
+</tbody>
+</table>
+<h2>Инструменты эскиза</h2>
+<p>Инструменты выбираются на панели рисования (а у многих есть быстрый вызов
+<code>Alt + буква</code>). Самые частые: линия, прямоугольник, окружность, дуга, текст,
+размер. Подробнее — <a href="#instrumenty-eskiza">Инструменты эскиза</a>.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Если забыл инструмент</div><p>Наведи курсор на кнопку — во всплывающей подсказке видно её название (и
+горячую клавишу, если есть).</p>
+</div>
+
+</section>
+<section id="materialy" class="doc">
+<h1>🧱 Таблица материалов</h1>
+<p>Материал задаёт <strong>плотность</strong>, из которой считается масса детали
+(масса = плотность × объём). Выбирается в «Свойствах детали»
+(см. <a href="#material-i-massa">Материал и масса</a>).</p>
+<table>
+<thead>
+<tr>
+<th>Материал</th>
+<th>Плотность, кг/м³</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Сталь</td>
+<td>7850</td>
+</tr>
+<tr>
+<td>Алюминий</td>
+<td>2700</td>
+</tr>
+<tr>
+<td>Латунь</td>
+<td>8500</td>
+</tr>
+<tr>
+<td>Медь</td>
+<td>8960</td>
+</tr>
+<tr>
+<td>Титан</td>
+<td>4500</td>
+</tr>
+<tr>
+<td>ABS-пластик</td>
+<td>1040</td>
+</tr>
+<tr>
+<td>PLA-пластик</td>
+<td>1240</td>
+</tr>
+<tr>
+<td>Нейлон</td>
+<td>1150</td>
+</tr>
+<tr>
+<td>Дерево</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Стекло</td>
+<td>2500</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Своя плотность</div><p>Если нужного материала нет — выбери «Своя плотность» и впиши число (кг/м³).
+Из Python: <code>body.set_material(density=1200)</code> (см. <a href="#spravochnik-api">Справочник API</a>).</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Зачем масса</div><p>Масса нужна для расчёта <strong>сил</strong> в механизме — реакций в шарнирах и момента
+мотора (см. <a href="#sily-i-grafiki">Силы и графики</a>).</p>
+</div>
+
+</section>
+<section id="shpargalka-vcad-py" class="doc">
+<h1>🧾 Шпаргалка ASCAD</h1>
+<p>Все команды на одной странице. Держи рядом, когда пишешь скрипт.
+Подробности — в уроках по ссылкам.</p>
+<hr>
+<h2>Скелет скрипта</h2>
+<pre><code class="language-python">from vcad import Scene, Plane
+
+scene = Scene()                      # обязательно!
+body = scene.add_body(name=&quot;Деталь&quot;)
+# ... строим ...
+</code></pre>
+
+<div class="callout callout-note"><div class="callout-title">📝 Главное правило</div><p>К моменту, когда скрипт завершится, должна существовать переменная
+<strong><code>scene</code></strong> — её показывает ASCAD. Создаёшь её в начале (<code>scene = Scene()</code>),
+дальше наполняешь; «в конце» = «к завершению», а не «последняя строка».
+Сохранять (<code>save</code>) в окне редактора не нужно.</p>
+</div>
+<hr>
+<h2>Готовые фигуры (примитивы) → <a href="#2-pervaya-detal">2. Первая деталь</a></h2>
+<pre><code class="language-python">body.cube(width=30, height=20, depth=10)
+body.cylinder(radius=12, height=40)
+body.sphere(radius=15)
+body.cone(radius=12, height=30)
+# сдвинуть: position=(x, y, z)
+body.cube(width=10, height=10, depth=10, position=(0, 0, 25))
+</code></pre>
+<p>➡ Примитив всегда появляется по центру <strong>(0, 0, 0)</strong>.</p>
+<hr>
+<h2>Плоскости → <a href="#1-sistemy-koordinat">1. Системы координат</a></h2>
+<table>
+<thead>
+<tr>
+<th>Запись</th>
+<th>Лист лежит как</th>
+<th>Деталь растёт по</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Plane.XY</code></td>
+<td>пол</td>
+<td>Z (вверх)</td>
+</tr>
+<tr>
+<td><code>Plane.XZ</code></td>
+<td>стена перед тобой</td>
+<td>Y (вглубь)</td>
+</tr>
+<tr>
+<td><code>Plane.YZ</code></td>
+<td>боковая стена</td>
+<td>X (вбок)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Эскиз + выдавливание → <a href="#3-eskiz-i-vydavlivanie">3. Эскиз и выдавливание</a></h2>
+<pre><code class="language-python">sk = body.start_sketch(plane=Plane.XY)
+sk.circle(center=(0, 0), radius=15)
+sk.rectangle_centered(center=(0, 0), width=40, height=25)
+sk.polygon(center=(0, 0), radius=15, sides=6)
+sk.line(start=(0, 0), end=(20, 10))
+sk.arc(center=(0, 0), radius=10, start_angle=0, end_angle=90)
+
+body.extrude(sk, height=8)                       # добавить объём
+body.extrude(sk, height=8, height_backward=8)    # в обе стороны
+body.extrude(sk, height=20, taper=0.5)           # сузить кверху
+</code></pre>
+<hr>
+<h2>Отверстия и вырезы → <a href="#4-otverstiya-i-vyrezy">4. Отверстия и вырезы</a></h2>
+<pre><code class="language-python">hole = body.start_sketch(plane=Plane.XY)
+hole.circle(center=(0, 0), radius=8)
+body.cut(hole, height=10, height_backward=10)    # пробить насквозь
+</code></pre>
+<p>➡ <code>extrude</code> = добавить, <code>cut</code> = убрать.</p>
+<hr>
+<h2>Эскиз на грани → <a href="#5-eskiz-na-grani">5. Эскиз на грани</a></h2>
+<pre><code class="language-python">sk = body.start_sketch(
+    plane=&quot;CUSTOM&quot;,
+    face_coord_system={
+        &quot;origin&quot;: (0, 0, 10),   # ноль на грани
+        &quot;normal&quot;: (0, 0, 1),    # куда торчит грань
+        &quot;uAxis&quot;:  (1, 0, 0),    # вправо на грани
+        &quot;vAxis&quot;:  (0, 1, 0),    # вверх на грани
+    },
+)
+</code></pre>
+<p>➡ Обычно делается мышкой (клик по грани → «Эскиз в деталь»). Блок
+<code>face_coord_system</code> <strong>не удалять</strong>.</p>
+<hr>
+<h2>Скругления и фаски (продвинутое)</h2>
+<p>Скруглить острое ребро (<em>fillet</em>) или срезать его под углом (<em>chamfer</em>)
+проще всего <strong>мышкой</strong>: выдели ребро или грань в 3D-окне и нажми кнопку
+<strong>«Скругление»</strong> / <strong>«Фаска»</strong>, задай радиус. В коде это выглядит так
+(ASCAD подставляет рёбра сам):</p>
+<pre><code class="language-python">body.fillet_3d(radius=2,  edges=[...])     # скруглить рёбра
+body.chamfer_3d(distance1=1, edges=[...])  # срезать рёбра под углом
+</code></pre>
+<hr>
+<h2>Отладчик → <a href="#6-otladchik">6. Отладчик</a></h2>
+<ul>
+<li><strong>🐞 Отладка</strong> — старт пошагового выполнения.</li>
+<li><strong>⏭ Шаг</strong> — одна строка; после неё видно, что добавилось.</li>
+<li><strong>⏩ Дальше</strong> — до точки останова или до конца.</li>
+<li><strong>⏹ Стоп</strong> — завершить.</li>
+<li><strong>🔴 Точка останова</strong> — клик по полоске слева от номеров строк.</li>
+</ul>
+<p>➡ Рисуется только то, что построено к текущему шагу.</p>
+<hr>
+<h2>❗ Если что-то не так</h2>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Частые проблемы</div><ul>
+<li><strong>Ничего не появилось</strong> → проверь, что в конце есть переменная <code>scene</code>.</li>
+<li><strong>Отверстия нет</strong> → вырез «не достаёт», увеличь <code>height</code> / добавь <code>height_backward</code>.</li>
+<li><strong>Деталь не там / съехала</strong> → проверь <code>position</code> и плоскость эскиза.</li>
+<li><strong>Красная ошибка</strong> → прочитай последнюю строку: там обычно номер
+строки и подсказка, что поправить.</li>
+</ul>
+</div>
+<hr>
+<p>Назад в <a href="#oglavlenie">Оглавление</a></p>
+
+</section>
+</main>
+</div>
+<script>
+const links=[...document.querySelectorAll('nav a')];
+const search=document.querySelector('nav .search');
+search.addEventListener('input',()=>{const q=search.value.toLowerCase();for(const a of links){a.style.display=a.textContent.toLowerCase().includes(q)?'':'none'}});
+const secs=[...document.querySelectorAll('section.doc')];
+const byId=new Map(links.map(a=>[a.dataset.id,a]));
+const io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));byId.get(e.target.id)?.classList.add('active')}}},{rootMargin:'-10% 0px -80% 0px'});
+secs.forEach(s=>io.observe(s));
+// "Open example" buttons → ask the parent app to load the scene.
+document.addEventListener('click',e=>{const b=e.target.closest('.ex-btn');if(b&&parent!==window)parent.postMessage({type:'vcad-open-example',name:b.dataset.example},location.origin)});
+</script>
+</body></html>

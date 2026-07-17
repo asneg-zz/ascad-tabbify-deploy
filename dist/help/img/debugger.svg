@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 130" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="13">
+  <rect width="380" height="130" fill="#ffffff"/>
+  <!-- start button -->
+  <rect x="20" y="20" width="120" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="36" y="40" fill="#b91c1c">🐞 Отладка</text>
+  <text x="150" y="40" fill="#6b7280" font-size="12">— начать пошагово</text>
+  <!-- arrow down -->
+  <line x1="60" y1="54" x2="60" y2="74" stroke="#9ca3af" stroke-width="1.5"/>
+  <polygon points="60,76 55,67 65,67" fill="#9ca3af"/>
+  <!-- step controls -->
+  <rect x="20" y="80" width="86" height="30" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="34" y="100" fill="#1d4ed8">⏭ Шаг</text>
+  <rect x="116" y="80" width="104" height="30" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="130" y="100" fill="#1d4ed8">⏩ Дальше</text>
+  <rect x="230" y="80" width="86" height="30" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="246" y="100" fill="#374151">⏹ Стоп</text>
+</svg>
