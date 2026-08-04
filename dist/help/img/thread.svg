@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 250" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="12">
+  <rect width="560" height="250" fill="#ffffff"/>
+
+  <!-- ── ЛЕВО: профиль витка в эскизе ─────────────────────────── -->
+  <text x="14" y="20" fill="#374151" font-weight="700">1. Профиль витка (эскиз)</text>
+
+  <!-- тело детали (слева от нуля) -->
+  <rect x="18" y="52" width="42" height="140" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="20" y="46" fill="#6b7280">тело детали</text>
+
+  <!-- локальные оси эскиза -->
+  <line x1="60" y1="48" x2="60" y2="204" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="18" y1="126" x2="196" y2="126" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="49" y="218" fill="#6b7280">+Y</text>
+  <text x="200" y="130" fill="#6b7280">+X</text>
+
+  <!-- виток: трапеция 60° со срезанной вершиной -->
+  <polygon points="40,88 40,164 150,132 150,120" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+  <text x="62" y="130" fill="#2563eb">60°</text>
+  <line x1="152" y1="122" x2="168" y2="152" stroke="#2563eb" stroke-width="1"/>
+  <text x="150" y="166" fill="#2563eb">вершина срезана</text>
+
+  <!-- глубина H -->
+  <line x1="60" y1="182" x2="150" y2="182" stroke="#ef4444" stroke-width="1.5"/>
+  <polygon points="60,182 68,178 68,186" fill="#ef4444"/>
+  <polygon points="150,182 142,178 142,186" fill="#ef4444"/>
+  <text x="66" y="198" fill="#ef4444">H = 0.5413·P</text>
+
+  <text x="14" y="236" fill="#6b7280">+X — наружу от оси детали, +Y — вдоль оси</text>
+
+  <!-- ── ПРАВО: навиваем по спирали ───────────────────────────── -->
+  <text x="300" y="20" fill="#374151" font-weight="700">2. Навиваем по спирали</text>
+  <text x="300" y="40" fill="#6b7280">sweep_helix</text>
+
+  <!-- ось -->
+  <line x1="400" y1="48" x2="400" y2="218" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 3"/>
+
+  <!-- стержень -->
+  <rect x="372" y="58" width="56" height="150" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- витки: передняя (тёмная) и задняя (светлая) половины -->
+  <g fill="none" stroke="#93c5fd" stroke-width="2">
+    <path d="M352 84 C 372 96, 428 96, 448 84"/>
+    <path d="M352 114 C 372 126, 428 126, 448 114"/>
+    <path d="M352 144 C 372 156, 428 156, 448 144"/>
+  </g>
+  <g fill="none" stroke="#2563eb" stroke-width="2.5">
+    <path d="M352 84 C 372 72, 428 72, 448 84"/>
+    <path d="M352 114 C 372 102, 428 102, 448 114"/>
+    <path d="M352 144 C 372 132, 428 132, 448 144"/>
+    <path d="M352 174 C 372 162, 428 162, 448 174"/>
+  </g>
+
+  <!-- шаг P -->
+  <line x1="470" y1="84" x2="470" y2="114" stroke="#ef4444" stroke-width="1.5"/>
+  <polygon points="470,84 466,92 474,92" fill="#ef4444"/>
+  <polygon points="470,114 466,106 474,106" fill="#ef4444"/>
+  <text x="478" y="103" fill="#ef4444">P — шаг</text>
+
+  <!-- диаметр D -->
+  <line x1="352" y1="228" x2="448" y2="228" stroke="#16a34a" stroke-width="1.5"/>
+  <polygon points="352,228 360,224 360,232" fill="#16a34a"/>
+  <polygon points="448,228 440,224 440,232" fill="#16a34a"/>
+  <text x="394" y="222" fill="#16a34a">D</text>
+</svg>

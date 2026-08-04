@@ -1,0 +1,356 @@
+{
+  "version": 2,
+  "bodies": [
+    {
+      "id": "be788776-56bd-4bdb-8ca7-79ea2876a9db",
+      "name": "Болт М10",
+      "visible": true,
+      "features": [
+        {
+          "id": "ad0e4eed-0018-4d60-ad35-b22aff346cee",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "b7685045-c2eb-47a8-a70f-6301007b9a17",
+                "type": "polygon",
+                "center": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "radius": 9.814954576223638,
+                "sides": 6
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "05eff521-d1c8-4af8-b840-d8416e0c43bd",
+          "type": "extrude",
+          "sketch_id": "ad0e4eed-0018-4d60-ad35-b22aff346cee",
+          "height": 0.0,
+          "height_backward": 7.0,
+          "draft_angle": 0.0,
+          "cut": false
+        },
+        {
+          "id": "70714291-c444-4f49-9b04-bc311435529a",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "187a67c0-116b-4679-9a97-76aa58ea570d",
+                "type": "circle",
+                "center": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "radius": 4.1880500000000005
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "d0eabbfa-15e8-43a3-9432-cb3bf0c81bb0",
+          "type": "extrude",
+          "sketch_id": "70714291-c444-4f49-9b04-bc311435529a",
+          "height": 20.0,
+          "height_backward": 0.0,
+          "draft_angle": 0.0,
+          "cut": false
+        },
+        {
+          "id": "4cea0546-c37b-4a7b-9530-57390d69a523",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "2bb89ec8-903e-4de7-94ae-3c0a457cafe5",
+                "type": "polyline",
+                "points": [
+                  {
+                    "x": -0.1,
+                    "y": -0.09375
+                  },
+                  {
+                    "x": -0.1,
+                    "y": 0.09375
+                  },
+                  {
+                    "x": 0.81195,
+                    "y": 0.6202645779874791
+                  },
+                  {
+                    "x": 0.81195,
+                    "y": -0.6202645779874791
+                  },
+                  {
+                    "x": -0.1,
+                    "y": -0.09375
+                  }
+                ]
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "453e4f41-0387-4065-8a67-64ee2117ab87",
+          "type": "sweep",
+          "sketch_id": "4cea0546-c37b-4a7b-9530-57390d69a523",
+          "helix": {
+            "pitch": 1.5,
+            "height": 18.45947084402504,
+            "radius": 4.1880500000000005,
+            "center": [
+              0.0,
+              0.0,
+              0.7702645779874792
+            ],
+            "direction": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "lefthand": false
+          },
+          "twist_angle": 0.0,
+          "frenet": true,
+          "cut": false
+        }
+      ]
+    },
+    {
+      "id": "6b50caf1-843c-4d39-a1a1-429c59df1334",
+      "name": "Гайка М10",
+      "visible": true,
+      "features": [
+        {
+          "id": "95429814-7ed5-4851-bcbe-922438b63368",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "0176a562-d3cb-4754-a2e4-7233c26c1549",
+                "type": "polygon",
+                "center": {
+                  "x": 30.0,
+                  "y": 0.0
+                },
+                "radius": 9.814954576223638,
+                "sides": 6
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "170d6f02-de07-46fd-8b72-07c6cb5636e0",
+          "type": "extrude",
+          "sketch_id": "95429814-7ed5-4851-bcbe-922438b63368",
+          "height": 8.0,
+          "height_backward": 0.0,
+          "draft_angle": 0.0,
+          "cut": false
+        },
+        {
+          "id": "ebd67bd3-49bf-4c45-b39e-fcd7907f66e7",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "d7d7dd63-2f20-45c4-94f4-e5ccdcf5b993",
+                "type": "circle",
+                "center": {
+                  "x": 30.0,
+                  "y": 0.0
+                },
+                "radius": 5.2
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "03a3b8cf-615a-43c5-b2ba-c9612b416909",
+          "type": "extrude",
+          "sketch_id": "ebd67bd3-49bf-4c45-b39e-fcd7907f66e7",
+          "height": 8.0,
+          "height_backward": 0.0,
+          "draft_angle": 0.0,
+          "cut": true
+        },
+        {
+          "id": "fa84050b-dae4-4b22-8c3b-ed3fdbde0265",
+          "type": "sketch",
+          "sketch": {
+            "plane": "XY",
+            "offset": 0.0,
+            "elements": [
+              {
+                "id": "140b6d46-3d99-4098-812b-eca2882fc0d9",
+                "type": "polyline",
+                "points": [
+                  {
+                    "x": 0.1,
+                    "y": -0.09375
+                  },
+                  {
+                    "x": 0.1,
+                    "y": 0.09375
+                  },
+                  {
+                    "x": -0.81195,
+                    "y": 0.6202645779874791
+                  },
+                  {
+                    "x": -0.81195,
+                    "y": -0.6202645779874791
+                  },
+                  {
+                    "x": 0.1,
+                    "y": -0.09375
+                  }
+                ]
+              }
+            ]
+          },
+          "transform": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "id": "04a96154-e1b8-4129-ae87-42c2f3cf9168",
+          "type": "sweep",
+          "sketch_id": "fa84050b-dae4-4b22-8c3b-ed3fdbde0265",
+          "helix": {
+            "pitch": 1.5,
+            "height": 6.4594708440250415,
+            "radius": 5.2,
+            "center": [
+              30.0,
+              0.0,
+              0.7702645779874792
+            ],
+            "direction": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "lefthand": false
+          },
+          "twist_angle": 0.0,
+          "frenet": true,
+          "cut": false
+        }
+      ]
+    }
+  ],
+  "body_operations": []
+}

@@ -53,6 +53,7 @@ main p em:only-child{display:block;text-align:center;color:#6b7280;font-size:13p
 <a href="#vraschenie-obolochka-massivy" data-id="vraschenie-obolochka-massivy">🌀 Вращение, оболочка, массивы</a>
 <a href="#vydavlivanie-i-vyrez" data-id="vydavlivanie-i-vyrez">📦 Выдавливание и вырез</a>
 <a href="#material-i-massa" data-id="material-i-massa">⚖️ Материал и масса</a>
+<a href="#rezba-bolt-i-gayka" data-id="rezba-bolt-i-gayka">🔩 Резьба: болт и гайка</a>
 <a href="#skruglenie-i-faska" data-id="skruglenie-i-faska">🔵 Скругление и фаска</a>
 <div class="nav-group">Импорт-экспорт</div>
 <a href="#step-i-proekty" data-id="step-i-proekty">🔄 Импорт и экспорт</a>
@@ -331,7 +332,8 @@ body.cube(width=20, height=20, depth=20)
 <ul>
 <li><strong>Лофт</strong> — плавный переход между несколькими сечениями.</li>
 <li><strong>Свип</strong> — протянуть профиль вдоль траектории; есть спираль и скручивание
-(twist) — пружины, резьба, винтовые формы.</li>
+(twist) — пружины, резьба, винтовые формы. Как сделать настоящую резьбу —
+в уроке <a href="#rezba-bolt-i-gayka">Резьба — болт и гайка</a>.</li>
 </ul>
 
 <div class="callout callout-tip"><div class="callout-title">💡 Что выбрать</div><p>Симметрично вокруг оси — <strong>вращение</strong>. Тонкие стенки — <strong>оболочка</strong>.
@@ -400,6 +402,325 @@ ABS, PLA, нейлон, дерево, стекло.</li>
 <div class="callout callout-tip"><div class="callout-title">💡 Из Python</div><p><code>body.set_material(&quot;steel&quot;)</code> или <code>body.set_material(density=1200)</code>
 (см. <a href="#spravochnik-api">Справочник API</a>).</p>
 </div>
+
+</section>
+<section id="rezba-bolt-i-gayka" class="doc">
+<h1>🔩 Резьба: болт и гайка</h1>
+<p>Резьба — это виток, навитый по спирали вокруг оси. Значит, её можно построить
+одним движением: нарисовать <strong>профиль витка</strong> и протянуть его по <strong>спирали</strong>
+(свип по спирали, <code>sweep_helix</code>).</p>
+<p><img src="img/thread.svg" alt="Профиль витка в эскизе и его навивка по спирали вокруг стержня">
+<em>Слева — профиль витка в эскизе, справа — он же, навитый по спирали</em></p>
+<p>Резьба описывается двумя числами:</p>
+<ul>
+<li><strong>D</strong> — наружный диаметр (у М10 это 10 мм);</li>
+<li><strong>P</strong> — шаг, на сколько миллиметров виток поднимается за один оборот.</li>
+</ul>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Резьбу строят в панели «Python»</div><p>Обычный <strong>Свип</strong> в меню умеет тянуть профиль только по <strong>плоскому</strong> эскизу, а
+спираль плоской не бывает. Поэтому спираль задают числами — командой
+<code>sweep_helix</code> в правой панели <strong>Python</strong>. Мышкой такую траекторию не нарисовать.</p>
+</div>
+<p><button class="ex-btn" data-example="bolt-nut-thread">▶ Открыть пример: болт М10 и гайка</button></p>
+<h2>Три правила, без которых не получится</h2>
+<p><strong>Правило 1. Резьбу ДОБАВЛЯЮТ, а не вырезают.</strong> Может показаться, что резьба —
+это канавка, которую надо вырезать из гладкого цилиндра. Так делать нельзя:
+<code>sweep_helix(..., is_cut=True)</code> в ASCAD молча не срабатывает — деталь остаётся
+гладкой, будто ничего не произошло. Поэтому:</p>
+<ul>
+<li><strong>болт</strong> = стержень по <strong>внутреннему</strong> диаметру + виток, торчащий <strong>наружу</strong>;</li>
+<li><strong>гайка</strong> = шестигранник с отверстием по <strong>наружному</strong> диаметру + виток,
+торчащий <strong>внутрь</strong>.</li>
+</ul>
+<p><strong>Правило 2. Обязательно <code>frenet=True</code>.</strong> Без этого профиль витка медленно
+<strong>проворачивается</strong> по мере навивки: начинается как надо, а через несколько
+оборотов ложится набок. Резьба получается «гуляющая» — витки то выше, то ниже,
+диаметр пляшет. Один параметр <code>frenet=True</code> жёстко привязывает профиль к
+спирали, и виток идёт ровно от начала до конца.</p>
+<p><strong>Правило 3. Профиль рисуют «сбоку», в местных координатах.</strong> Точка <code>(0, 0)</code>
+эскиза-профиля ложится прямо на спираль, и дальше:</p>
+<table>
+<thead>
+<tr>
+<th>Ось эскиза</th>
+<th>Куда смотрит на детали</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+X</code></td>
+<td><strong>наружу</strong> от оси детали (в сторону от центра)</td>
+</tr>
+<tr>
+<td><code>+Y</code></td>
+<td><strong>вверх</strong>, вдоль оси детали</td>
+</tr>
+</tbody>
+</table>
+<p>Поэтому виток «наружу» — это профиль с вершиной в <code>+X</code>, а виток «внутрь» —
+он же, отражённый в <code>−X</code>.</p>
+<h2>Размеры профиля</h2>
+<p>Профиль резьбы — равнобокая <strong>трапеция</strong> с углом 60°: у настоящей резьбы вершина
+витка тоже срезана площадкой, острого гребня не бывает.</p>
+<pre><code>H = 0.5413 · P                        # глубина профиля
+FLAT = P / 16                         # половина площадки на вершине
+BASE = FLAT + (H + OVER) · tg30°      # половина основания
+</code></pre>
+<p><code>OVER</code> (0.1 мм) — небольшой запас: основание трапеции утапливают в тело детали,
+чтобы виток приваривался к нему надёжно, а не касался по касательной.</p>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Не делай вершину острой</div><p>Если свести профиль в точку (треугольник вместо трапеции), ASCAD сдвинет весь
+виток к оси примерно на треть его высоты — резьба выйдет мельче задуманной.
+Срезанная вершина и правильнее по стандарту, и строится точно.</p>
+</div>
+
+<div class="callout callout-note"><div class="callout-title">📝 Профиль ложится развёрнутым</div><p>Свип по спирали разворачивает трапецию на 180°: та сторона, что в списке
+точек стоит на строке с <code>H</code> (у вершины), на готовой детали оказывается
+<strong>у стержня</strong>. Поэтому в коде широкая сторона <code>BASE</code> записана на строке с
+<code>H</code>, а узкая <code>FLAT</code> — на строке с <code>-OVER</code>. На детали получается как надо:
+широкое основание витка прижато к стержню, узкая площадка — снаружи.</p>
+</div>
+<h2>Готовый скрипт</h2>
+<p>Открой правую панель <strong>Python</strong>, вставь этот код и нажми <strong>Запустить</strong> —
+появятся болт М10×1.5 и гайка рядом с ним.</p>
+<pre><code class="language-python">from math import cos, radians, tan
+
+from vcad import Plane, Scene
+
+# ── Параметры резьбы (М10×1.5) ─────────────────────────────
+D = 10.0        # наружный диаметр резьбы, мм
+P = 1.5         # шаг резьбы, мм
+L = 20.0        # длина резьбовой части болта, мм
+AF = 17.0       # размер «под ключ», мм
+HEAD_H = 7.0    # высота головки болта, мм
+NUT_H = 8.0     # высота гайки, мм
+CLR = 0.4       # зазор для 3D-печати (по диаметру), мм
+
+H = 0.5413 * P                      # глубина профиля резьбы
+FLAT = P / 16                       # половина площадки на вершине витка
+OVER = 0.1                          # утопить основание витка в тело
+BASE = FLAT + (H + OVER) * tan(radians(30))   # половина основания витка
+RUN = BASE + 0.15                   # сбег: отступ витков от торцов
+R_HEX = AF / 2 / cos(radians(30))   # радиус описанной окружности
+
+# Профиль витка: трапеция — вершина срезана площадкой 2·FLAT.
+# Широкая сторона (BASE) записана на строке с H, но на детали ложится
+# к стержню: свип по спирали разворачивает профиль на 180°.
+ridge_out = [(-OVER, -FLAT), (-OVER, FLAT), (H, BASE), (H, -BASE), (-OVER, -FLAT)]
+ridge_in = [(OVER, -FLAT), (OVER, FLAT), (-H, BASE), (-H, -BASE), (OVER, -FLAT)]
+
+scene = Scene()
+
+# ── Болт ───────────────────────────────────────────────────
+r_core = D / 2 - H
+bolt = scene.add_body(name=&quot;Болт М10&quot;)
+
+sk = bolt.start_sketch(plane=Plane.XY)          # головка «под ключ»
+sk.polygon((0, 0), R_HEX, 6)
+bolt.extrude(sk, 0, height_backward=HEAD_H)
+
+sk = bolt.start_sketch(plane=Plane.XY)          # стержень по внутреннему диаметру
+sk.circle((0, 0), r_core)
+bolt.extrude(sk, L)
+
+sk = bolt.start_sketch(plane=Plane.XY)          # виток резьбы — наружу
+sk.polyline(ridge_out)
+bolt.sweep_helix(sk, pitch=P, height=L - 2 * RUN, radius=r_core,
+                 center=(0, 0, RUN), frenet=True)
+
+# ── Гайка (рядом, x = 30) ──────────────────────────────────
+r_bore = (D + CLR) / 2
+nut = scene.add_body(name=&quot;Гайка М10&quot;)
+
+sk = nut.start_sketch(plane=Plane.XY)           # шестигранник
+sk.polygon((30, 0), R_HEX, 6)
+nut.extrude(sk, NUT_H)
+
+sk = nut.start_sketch(plane=Plane.XY)           # отверстие
+sk.circle((30, 0), r_bore)
+nut.cut(sk, NUT_H)
+
+sk = nut.start_sketch(plane=Plane.XY)           # виток резьбы — внутрь
+sk.polyline(ridge_in)
+nut.sweep_helix(sk, pitch=P, height=NUT_H - 2 * RUN, radius=r_bore,
+                center=(30, 0, RUN), frenet=True)
+</code></pre>
+<h2>Что здесь происходит, по шагам</h2>
+<p><strong>Болт.</strong></p>
+<ol>
+<li>Шестигранник → выдавливаем <strong>назад</strong> (<code>height=0, height_backward=HEAD_H</code>),
+чтобы головка выросла вниз, под плоскость XY.</li>
+<li>Круг радиусом <code>r_core = D/2 − H</code> → выдавливаем вверх на длину <code>L</code>. Это
+<strong>внутренний</strong> диаметр резьбы, «сердцевина» стержня.</li>
+<li>Профиль <code>ridge_out</code> → <code>sweep_helix</code> по спирали радиусом <code>r_core</code>. Вершина
+трапеции торчит наружу ровно на <code>H</code> и как раз доходит до наружного
+диаметра D.</li>
+</ol>
+<p><strong>Гайка.</strong> То же самое наоборот: шестигранник, отверстие радиусом
+<code>r_bore = (D + зазор)/2</code>, и виток <code>ridge_in</code>, который растёт из стенки
+отверстия <strong>внутрь</strong>.</p>
+
+<div class="callout callout-tip"><div class="callout-title">💡 Сбег резьбы</div><p>Спираль делают короче детали на <code>2·RUN</code> и приподнимают на <code>RUN</code>
+(<code>center=(0, 0, RUN)</code>). Иначе крайние витки вылезут за торец и будут висеть
+в воздухе — деталь так не напечатается.</p>
+</div>
+<h2>Как проверить, что резьба вышла ровной</h2>
+<p>У правильной резьбы диаметр не «дышит» по длине. Поверни деталь боком и
+посмотри на силуэт: вершины витков должны лежать на одной прямой, а не
+волной. Если волна — потерян <code>frenet=True</code>.</p>
+<p>Числами (для М10×1.5 из скрипта): вершина витка болта — ровно на радиусе
+<strong>5.000</strong>, впадина — <strong>4.188</strong>; у гайки отверстие <strong>5.200</strong>, вершина витка —
+<strong>4.388</strong>. Между болтом и гайкой остаётся зазор 0.2 мм на сторону — она
+наворачивается.</p>
+<h2>Чтобы болт вкручивался в гайку</h2>
+<p>Резьбы должны быть <strong>одинаковые</strong> (совпадают D и P), а между ними нужен зазор.
+За зазор отвечает <code>CLR</code>: отверстие гайки делается на <code>CLR</code> больше наружного
+диаметра болта.</p>
+<table>
+<thead>
+<tr>
+<th>Что печатаешь</th>
+<th><code>CLR</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Точная посадка (SLA, аккуратный FDM)</td>
+<td>0.2–0.3 мм</td>
+</tr>
+<tr>
+<td>Обычный FDM, сопло 0.4</td>
+<td><strong>0.4 мм</strong></td>
+</tr>
+<tr>
+<td>Если после печати не крутится</td>
+<td>0.5–0.6 мм</td>
+</tr>
+</tbody>
+</table>
+<h2>Стандартные размеры</h2>
+<p>Хочешь другой болт — поменяй только эти строчки:</p>
+<table>
+<thead>
+<tr>
+<th>Резьба</th>
+<th><code>D</code></th>
+<th><code>P</code></th>
+<th><code>AF</code> (под ключ)</th>
+<th><code>HEAD_H</code></th>
+<th><code>NUT_H</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>М6</td>
+<td>6</td>
+<td>1.0</td>
+<td>10</td>
+<td>4.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>М8</td>
+<td>8</td>
+<td>1.25</td>
+<td>13</td>
+<td>5.3</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td>М10</td>
+<td>10</td>
+<td>1.5</td>
+<td>17</td>
+<td>6.4</td>
+<td>8.0</td>
+</tr>
+<tr>
+<td>М12</td>
+<td>12</td>
+<td>1.75</td>
+<td>19</td>
+<td>7.5</td>
+<td>10.0</td>
+</tr>
+</tbody>
+</table>
+<p>Всё остальное (<code>H</code>, <code>FLAT</code>, <code>BASE</code>, <code>RUN</code>, <code>R_HEX</code>, радиусы) считается из них
+само.</p>
+
+<div class="callout callout-warning"><div class="callout-title">⚠️ Мелкая резьба не печатается</div><p>Шаг меньше <strong>1 мм</strong> обычный FDM-принтер не воспроизведёт: виток окажется
+тоньше слоя. Для печатных деталей бери М8 и крупнее — или увеличь шаг
+нарочно (например, <code>P = 2</code> на М10): резьба станет грубее, зато рабочей.</p>
+</div>
+<h2>Частые ошибки</h2>
+<table>
+<thead>
+<tr>
+<th>Симптом</th>
+<th>Причина</th>
+<th>Что делать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Деталь гладкая, резьбы нет</td>
+<td>использован <code>is_cut=True</code></td>
+<td>резьбу <strong>добавляют</strong>: убери <code>is_cut</code></td>
+</tr>
+<tr>
+<td>Витки «гуляют», диаметр волной</td>
+<td>забыт <code>frenet=True</code></td>
+<td>добавь <code>frenet=True</code> в <code>sweep_helix</code></td>
+</tr>
+<tr>
+<td>Резьба мельче, чем задумана</td>
+<td>профиль с острой вершиной</td>
+<td>срежь вершину площадкой (<code>FLAT</code>)</td>
+</tr>
+<tr>
+<td>Виток широкой частью наружу</td>
+<td>профиль записан «как рисуешь»</td>
+<td>поменяй <code>BASE</code> и <code>FLAT</code> местами — свип разворачивает трапецию</td>
+</tr>
+<tr>
+<td>Витки торчат за торец детали</td>
+<td>спираль длиннее детали</td>
+<td>подними на <code>RUN</code>, укороти на <code>2·RUN</code></td>
+</tr>
+<tr>
+<td>Виток идёт в другую сторону</td>
+<td>перепутаны <code>ridge_out</code> / <code>ridge_in</code></td>
+<td>у болта вершина в <code>+X</code>, у гайки — в <code>−X</code></td>
+</tr>
+<tr>
+<td>Резьба «висит» рядом с деталью</td>
+<td><code>radius</code> спирали не совпал с поверхностью</td>
+<td>у болта <code>radius=r_core</code>, у гайки <code>radius=r_bore</code></td>
+</tr>
+<tr>
+<td>Гайка не наворачивается</td>
+<td>мал зазор</td>
+<td>увеличь <code>CLR</code> до 0.5–0.6</td>
+</tr>
+<tr>
+<td>Левая резьба вместо правой</td>
+<td>—</td>
+<td>добавь <code>lefthand=True</code> в <code>sweep_helix</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Что дальше</h2>
+<ul>
+<li>Готовую <strong>гайку по ГОСТ 5915</strong> и шайбу можно просто взять в
+<a href="#komponenty-shesterni-krepezh">библиотеке компонентов</a> — там она строится
+без резьбы, как упрощённая модель.</li>
+<li>Той же командой <code>sweep_helix</code> делают <strong>пружины</strong> (круглый профиль вместо
+трапеции) и <strong>шнеки</strong> — см. <a href="#vraschenie-obolochka-massivy">Вращение, оболочка, массивы</a>. Круглому профилю
+<code>frenet</code> не нужен: он одинаков со всех сторон, проворачиваться нечему.</li>
+<li>Проверить, сколько весит болт, поможет <a href="#material-i-massa">Материал и масса</a>.</li>
+<li>Соединить болт с гайкой в сборке — <a href="#ekzemplyary-i-sopryazheniya">Экземпляры и сопряжения</a>.</li>
+</ul>
 
 </section>
 <section id="skruglenie-i-faska" class="doc">
@@ -589,7 +910,9 @@ a.motor(slider, oscillate_mm=8, freq_hz=1)
 <li><strong>Крепёж по ГОСТ:</strong>
 <ul>
 <li><strong>Шайба</strong> (ГОСТ 11371) — по диаметру.</li>
-<li><strong>Гайка шестигранная</strong> (ГОСТ 5915) — по размеру резьбы.</li>
+<li><strong>Гайка шестигранная</strong> (ГОСТ 5915) — по размеру резьбы. Витки резьбы в ней
+не строятся: если нужна настоящая рабочая резьба, смотри урок
+<a href="#rezba-bolt-i-gayka">Резьба — болт и гайка</a>.</li>
 </ul>
 </li>
 </ul>
@@ -1244,7 +1567,10 @@ scene = Scene()
 <li><code>body.cut(sketch, ...)</code> — вырез (то же, но вычитает).</li>
 <li><code>body.revolve(sketch, axis_start, axis_end, angle=360, cut=False)</code> — вращение.</li>
 <li><code>body.sweep(sketch, path_sketch, ...)</code> / <code>body.sweep_cut(...)</code> — свип по траектории.</li>
-<li><code>body.sweep_helix(sketch, ...)</code> — свип по спирали (пружины, резьба).</li>
+<li><code>body.sweep_helix(sketch, pitch=.., height=.., radius=.., center=(x,y,z), lefthand=False)</code> —
+свип по спирали (пружины, резьба). Профиль встаёт на спираль: <code>+X</code> эскиза —
+наружу от оси, <code>+Y</code> — вдоль оси. Вырез по спирали (<code>is_cut=True</code>) не работает —
+резьбу <strong>добавляют</strong>, см. <a href="#rezba-bolt-i-gayka">Резьба — болт и гайка</a>.</li>
 <li><code>body.loft(sections, ...)</code> — лофт между сечениями.</li>
 <li><code>body.shell(faces, thickness)</code> — оболочка (полая деталь).</li>
 <li><code>body.fillet_3d(edges=..., faces=..., radius=R)</code> — скругление рёбер.</li>
