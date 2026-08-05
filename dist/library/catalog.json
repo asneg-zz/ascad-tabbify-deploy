@@ -1,0 +1,38 @@
+{
+  "tier": "basic",
+  "items": [
+    {
+      "id": "gear",
+      "category": "gears",
+      "name": "Шестерня (прямозубая / косозубая)",
+      "tier": "basic",
+      "locked": false,
+      "code": "import math\nfrom vcad import GearParams, Plane, Scene, add_gear_sketch\n\n# ===== Параметры шестерни =====\nMODULE = 2.0           # модуль m, мм\nTEETH = 24             # число зубьев z\nTHICKNESS = 6.0        # толщина, мм\nBORE_DIAMETER = 6.0    # диаметр отверстия, мм (0 — без отверстия)\nPRESSURE_ANGLE = 20.0  # угол зацепления, град\nHELIX_ANGLE = 0.0      # угол наклона зуба β, град (0 — прямозубая)\n# ==============================\n\nparams = GearParams.of(module=MODULE, teeth=TEETH, pressure_angle_deg=PRESSURE_ANGLE, dedendum_factor=1.25)\nscene = Scene()\nbody = scene.add_body(name=f\"Шестерня m{MODULE:g} z{TEETH}\")\n\nsk = body.start_sketch(plane=Plane.XY)\nadd_gear_sketch(sk, params)\n\n# Угол наклона зуба → закрутка профиля по высоте (0 → прямозубая)\npitch_r = MODULE * TEETH / 2.0\ntwist = math.degrees(THICKNESS * math.tan(math.radians(HELIX_ANGLE)) / pitch_r) if HELIX_ANGLE else 0.0\nbody.extrude(sk, height=THICKNESS, twist_angle=twist)\n\n# Посадочное отверстие\nif BORE_DIAMETER > 0:\n    sk_bore = body.start_sketch(plane=Plane.XY, offset=THICKNESS)\n    sk_bore.circle(center=(0, 0), radius=BORE_DIAMETER / 2.0)\n    body.cut(sk_bore, height=0, height_backward=THICKNESS + 1.0)\n"
+    },
+    {
+      "id": "ring_gear",
+      "category": "gears",
+      "name": "Кольцо с внутренними зубьями (эпицикл)",
+      "tier": "basic",
+      "locked": false,
+      "code": "from vcad import GearParams, Plane, Scene, add_internal_gear_sketch\n\n# ===== Кольцо с внутренними зубьями (эпицикл / венец) =====\nMODULE = 2.0           # модуль m, мм\nTEETH = 30             # число зубьев z\nTHICKNESS = 6.0        # толщина венца, мм\nRIM_WIDTH = 5.0        # толщина обода за окружностью впадин, мм\nPRESSURE_ANGLE = 20.0  # угол зацепления, град\n# =========================================================\n\nparams = GearParams.of(module=MODULE, teeth=TEETH, pressure_angle_deg=PRESSURE_ANGLE, dedendum_factor=1.25)\nouter_d = params.int_root_d + 2 * RIM_WIDTH\n\nscene = Scene()\nbody = scene.add_body(name=f\"Венец m{MODULE:g} z{TEETH}\")\n\n# Наружный диск обода\nsk = body.start_sketch(plane=Plane.XY)\nsk.circle(center=(0, 0), radius=outer_d / 2.0)\nbody.extrude(sk, height=THICKNESS)\n\n# Внутренние зубья — вырез зубчатого профиля насквозь (зубья смотрят к центру)\nsk_teeth = body.start_sketch(plane=Plane.XY, offset=THICKNESS)\nadd_internal_gear_sketch(sk_teeth, params)\nbody.cut(sk_teeth, height=0, height_backward=THICKNESS + 1.0)\n"
+    },
+    {
+      "id": "washer",
+      "category": "fasteners",
+      "name": "Шайба плоская (ГОСТ 11371-78)",
+      "tier": "basic",
+      "locked": false,
+      "code": "from vcad import Plane, Scene\n\n# ===== Шайба плоская ГОСТ 11371-78 (исполнение 1) =====\nNOMINAL = 8   # номинальный диаметр крепежа M, мм (ключ таблицы ниже)\n# =====================================================\n\n# ГОСТ 11371-78: M → (d — отверстие, D — наружный, s — толщина), мм\nGOST_11371 = {\n    2: (2.2, 5, 0.3), 2.5: (2.7, 6, 0.5), 3: (3.2, 7, 0.5),\n    4: (4.3, 9, 0.8), 5: (5.3, 10, 1.0), 6: (6.4, 12, 1.6),\n    8: (8.4, 16, 1.6), 10: (10.5, 20, 2.0), 12: (13.0, 24, 2.5),\n    14: (15.0, 28, 2.5), 16: (17.0, 30, 3.0), 18: (19.0, 34, 3.0),\n    20: (21.0, 37, 3.0), 22: (23.0, 39, 3.0), 24: (25.0, 44, 4.0),\n    27: (28.0, 50, 4.0), 30: (31.0, 56, 4.0), 36: (37.0, 66, 5.0),\n}\n\nd_hole, d_out, s = GOST_11371[NOMINAL]\n\nscene = Scene()\nbody = scene.add_body(name=f\"Шайба M{NOMINAL:g} ГОСТ 11371\")\n\n# Диск наружным диаметром D\nsk = body.start_sketch(plane=Plane.XY)\nsk.circle(center=(0, 0), radius=d_out / 2.0)\nbody.extrude(sk, height=s)\n\n# Центральное отверстие d (насквозь)\nsk_hole = body.start_sketch(plane=Plane.XY, offset=s)\nsk_hole.circle(center=(0, 0), radius=d_hole / 2.0)\nbody.cut(sk_hole, height=0, height_backward=s + 1.0)\n"
+    },
+    {
+      "id": "nut",
+      "category": "fasteners",
+      "name": "Гайка шестигранная (ГОСТ 5915-70)",
+      "tier": "basic",
+      "locked": false,
+      "code": "import math\nfrom vcad import Plane, Scene\n\n# ===== Гайка шестигранная ГОСТ 5915-70 (нормальной точности) =====\nNOMINAL = 8   # номинальный диаметр резьбы M, мм (ключ таблицы ниже)\n# ================================================================\n\n# ГОСТ 5915-70: M → (S — размер под ключ, m — высота), мм\nGOST_5915 = {\n    3: (5.5, 2.4), 4: (7, 3.2), 5: (8, 4.0), 6: (10, 5.0), 8: (13, 6.5),\n    10: (17, 8.0), 12: (19, 10.0), 14: (22, 11.0), 16: (24, 13.0), 18: (27, 15.0),\n    20: (30, 16.0), 22: (32, 18.0), 24: (36, 19.0), 27: (41, 22.0), 30: (46, 24.0), 36: (55, 29.0),\n}\n\nS, m = GOST_5915[NOMINAL]\nR = S / math.sqrt(3.0)   # радиус по вершинам (размер под ключ S = расстояние между гранями)\n\nscene = Scene()\nbody = scene.add_body(name=f\"Гайка M{NOMINAL:g} ГОСТ 5915\")\n\n# Шестигранник под ключ S\nsk = body.start_sketch(plane=Plane.XY)\nsk.polygon(center=(0, 0), radius=R, sides=6)\nbody.extrude(sk, height=m)\n\n# Резьбовое отверстие (упрощённо — по номиналу, насквозь)\nsk_hole = body.start_sketch(plane=Plane.XY, offset=m)\nsk_hole.circle(center=(0, 0), radius=NOMINAL / 2.0)\nbody.cut(sk_hole, height=0, height_backward=m + 1.0)\n"
+    }
+  ],
+  "static": true
+}
