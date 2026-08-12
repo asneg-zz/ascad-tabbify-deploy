@@ -1,0 +1,618 @@
+<!doctype html><html><head><meta charset=utf8><title>Car Vibro-Logger — презентация</title><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<style>
+  :root{
+    --bg:#eceef1; --surface:#ffffff; --surface-2:#f5f6f8;
+    --ink:#121820; --muted:#586170; --line:#dde1e7;
+    --accent:#1877c0; --accent-soft:rgba(24,119,192,.12);
+    --warm:#bd7a1f; --alert:#cf3439; --good:#218a5e;
+    --grid:rgba(10,20,35,.07);
+    --font-display:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --maxw:1080px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c0f14; --surface:#141922; --surface-2:#1a2029;
+      --ink:#e9ecf1; --muted:#8b93a1; --line:#262d38;
+      --accent:#57adf0; --accent-soft:rgba(87,173,240,.14);
+      --warm:#e6a94a; --alert:#ef5a5f; --good:#46c78c;
+      --grid:rgba(255,255,255,.06);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#eceef1; --surface:#ffffff; --surface-2:#f5f6f8;
+    --ink:#121820; --muted:#586170; --line:#dde1e7;
+    --accent:#1877c0; --accent-soft:rgba(24,119,192,.12);
+    --warm:#bd7a1f; --alert:#cf3439; --good:#218a5e; --grid:rgba(10,20,35,.07);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0f14; --surface:#141922; --surface-2:#1a2029;
+    --ink:#e9ecf1; --muted:#8b93a1; --line:#262d38;
+    --accent:#57adf0; --accent-soft:rgba(87,173,240,.14);
+    --warm:#e6a94a; --alert:#ef5a5f; --good:#46c78c; --grid:rgba(255,255,255,.06);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.08;
+    letter-spacing:-.02em;margin:0}
+  p{margin:0}
+  ::selection{background:var(--accent);color:#fff}
+
+  /* --- шапка --- */
+  .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top-in{max-width:var(--maxw);margin:0 auto;padding:12px 24px;
+    display:flex;align-items:center;gap:14px}
+  .brand{font-family:var(--font-mono);font-weight:700;font-size:14px;letter-spacing:.02em}
+  .brand .dot{color:var(--accent)}
+  .top .tag{font-family:var(--font-mono);font-size:11px;color:var(--muted);
+    letter-spacing:.14em;text-transform:uppercase;margin-left:auto}
+  .theme-btn{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    background:transparent;border:1px solid var(--line);border-radius:8px;
+    padding:5px 10px;cursor:pointer}
+  .theme-btn:hover{color:var(--ink);border-color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* --- слайд --- */
+  .slide{max-width:var(--maxw);margin:0 auto;padding:84px 24px;
+    border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;
+    margin-bottom:20px}
+  .eyebrow .num{color:var(--muted)}
+  .eyebrow::after{content:"";height:1px;flex:1;background:var(--line);margin-left:6px}
+  .slide h2{font-size:clamp(28px,4.4vw,44px);font-weight:800;max-width:20ch}
+  .lead{font-size:clamp(18px,2.2vw,22px);color:var(--muted);max-width:60ch;margin-top:18px}
+
+  /* --- герой --- */
+  .hero{max-width:var(--maxw);margin:0 auto;padding:72px 24px 60px;position:relative}
+  .hero .kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+  .hero h1{font-size:clamp(38px,7vw,76px);font-weight:850;max-width:15ch}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero .sub{font-size:clamp(18px,2.4vw,24px);color:var(--muted);max-width:52ch;margin-top:24px}
+  .scope{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .wave-wrap{position:relative;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2));overflow:hidden;
+    margin:34px auto 0;max-width:var(--maxw)}
+  .wave-wrap canvas{display:block;width:100%;height:220px}
+  .wave-cap{position:absolute;left:16px;bottom:12px;font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+  /* --- сетки --- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
+  .cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+  @media(max-width:760px){.cols,.cols-3{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card h3{font-size:19px;font-weight:750;margin-bottom:8px;letter-spacing:-.01em}
+  .card p{color:var(--muted);font-size:15.5px}
+  .card .ic{font-family:var(--font-mono);font-size:12px;color:var(--accent);
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:block}
+
+  /* --- статы --- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:34px}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);padding:22px 18px}
+  .stat .n{font-family:var(--font-mono);font-size:clamp(26px,4vw,38px);font-weight:700;
+    letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+  .stat .n small{font-size:.5em;color:var(--muted);font-weight:600}
+  .stat .l{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+
+  /* --- proof list --- */
+  .proof{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:12px}
+  .proof li{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;
+    background:var(--surface);border:1px solid var(--line);border-radius:12px}
+  .proof .ok{color:var(--good);font-family:var(--font-mono);font-weight:700;flex:none;
+    margin-top:1px}
+  .proof b{font-weight:700}
+  .proof span.d{color:var(--muted)}
+
+  /* --- архитектура --- */
+  .arch{display:flex;align-items:stretch;gap:0;margin-top:34px;flex-wrap:wrap}
+  .node{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--line);
+    border-radius:12px;padding:18px}
+  .node .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .node h3{font-size:16px;font-weight:700;margin-bottom:6px}
+  .node p{font-size:13.5px;color:var(--muted)}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);
+    font-family:var(--font-mono);padding:0 6px;font-size:20px}
+  @media(max-width:760px){.arrow{transform:rotate(90deg);padding:6px 0}}
+
+  /* --- график эталона --- */
+  .chart-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:22px;margin-top:34px}
+  .chart-card canvas{display:block;width:100%;height:340px}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;font-family:var(--font-mono);
+    font-size:12px;color:var(--muted)}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;
+    vertical-align:middle;margin-right:7px}
+
+  /* --- рынок / модель --- */
+  .seg{display:grid;gap:14px;margin-top:30px}
+  .seg .row{display:grid;grid-template-columns:170px 1fr;gap:20px;padding:16px 0;
+    border-top:1px solid var(--line)}
+  .seg .row:last-child{border-bottom:1px solid var(--line)}
+  .seg .who{font-weight:750}
+  .seg .who small{display:block;color:var(--muted);font-weight:500;font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+  .seg .val{color:var(--muted)}
+  @media(max-width:640px){.seg .row{grid-template-columns:1fr;gap:6px}}
+
+  /* --- дорожная карта --- */
+  .road{margin-top:34px;display:grid;gap:0}
+  .phase{display:grid;grid-template-columns:120px 1fr;gap:22px;padding:20px 0;
+    border-top:1px solid var(--line);position:relative}
+  .phase:last-child{border-bottom:1px solid var(--line)}
+  .phase .when{font-family:var(--font-mono);font-size:13px;color:var(--accent);
+    letter-spacing:.06em;padding-top:2px}
+  .phase .when b{display:block;color:var(--muted);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;margin-top:4px;font-weight:600}
+  .phase h3{font-size:18px;font-weight:750;margin-bottom:6px}
+  .phase p{color:var(--muted);font-size:15px}
+  .phase.done .when{color:var(--good)}
+  @media(max-width:640px){.phase{grid-template-columns:1fr;gap:6px}}
+
+  /* --- ask --- */
+  .ask{background:linear-gradient(160deg,var(--accent-soft),transparent);
+    border:1px solid var(--line);border-radius:18px;padding:34px;margin-top:34px}
+  .ask .amt{font-family:var(--font-mono);font-size:clamp(30px,5vw,46px);font-weight:750;
+    letter-spacing:-.02em}
+  .ask .use{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:26px}
+  @media(max-width:640px){.ask .use{grid-template-columns:repeat(2,1fr)}}
+  .ask .use div{background:var(--surface);padding:16px}
+  .ask .use .p{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--accent)}
+  .ask .use .t{font-size:13px;color:var(--muted);margin-top:4px}
+
+  .note{font-size:13px;color:var(--muted);font-family:var(--font-mono);
+    line-height:1.7;max-width:70ch}
+  .foot{max-width:var(--maxw);margin:0 auto;padding:40px 24px 80px;color:var(--muted)}
+  .ph{color:var(--warm);font-family:var(--font-mono)}
+
+  /* --- таблица сравнения --- */
+  .compare-wrap{overflow-x:auto;margin-top:34px;border:1px solid var(--line);border-radius:14px}
+  .compare{width:100%;border-collapse:collapse;font-size:14.5px;min-width:660px}
+  .compare th,.compare td{padding:13px 14px;text-align:center;border-bottom:1px solid var(--line)}
+  .compare th:first-child,.compare td:first-child{text-align:left;font-weight:600;min-width:220px}
+  .compare thead th{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);font-weight:600;vertical-align:bottom}
+  .compare tbody tr:last-child td{border-bottom:none}
+  .compare .us td{background:var(--accent-soft)}
+  .compare .us td:first-child{color:var(--accent);font-weight:800}
+  .compare .y{color:var(--good);font-weight:700}
+  .compare .p{color:var(--warm);font-weight:700}
+  .compare .n{color:var(--muted)}
+  .compare td small{display:block;color:var(--muted);font-weight:500;font-size:12px;
+    font-family:var(--font-body)}
+
+  /* --- команда --- */
+  .team-lead{display:flex;gap:20px;align-items:flex-start;margin-top:34px;flex-wrap:wrap}
+  .avatar{width:64px;height:64px;border-radius:14px;flex:none;
+    background:linear-gradient(150deg,var(--accent),var(--good));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:700;font-size:22px;color:#fff}
+  .team-lead .body{flex:1;min-width:260px}
+  .team-lead h3{font-size:20px;font-weight:750}
+  .team-lead .role{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--accent);margin:4px 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chips span{font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <span class="brand">CAR&nbsp;VIBRO<span class="dot">·</span>LOGGER</span>
+    <span class="tag">презентация для инвесторов</span>
+    <button class="theme-btn" id="themeToggle" aria-label="Сменить тему">тема</button>
+  </div>
+</header>
+
+<!-- ГЕРОЙ -->
+<section class="hero">
+  <div class="kicker">Предиктивная диагностика ходовой</div>
+  <h1>Машина сама сообщает, что подвеска <em>изнашивается</em> — за месяцы до поломки.</h1>
+  <p class="sub">Недорогой прибор слушает вибрацию и звук автомобиля, а облако превращает
+    их в состояние ходовой, тревоги и совет, как ехать, чтобы беречь подвеску.</p>
+</section>
+<div class="scope">
+  <div class="wave-wrap">
+    <canvas id="wave" aria-hidden="true"></canvas>
+    <span class="wave-cap">живой сигнал акселерометра · 1000 Гц</span>
+  </div>
+</div>
+
+<!-- ПРОБЛЕМА -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">01</span> Проблема</div>
+  <h2>Износ ходовой не виден, пока не станет дорогим.</h2>
+  <p class="lead">Амортизаторы, пружины, сайлентблоки деградируют плавно и незаметно.
+    Водитель узнаёт о проблеме на диагностике «по факту» — когда уже стучит, разбивает
+    смежные узлы и бьёт по безопасности.</p>
+  <div class="cols-3">
+    <div class="card"><span class="ic">дорого</span><h3>Реактивный ремонт</h3>
+      <p>Чинят по поломке, а не по состоянию. Изношенный демпфер добивает опоры,
+        покрышки, тормозной путь растёт.</p></div>
+    <div class="card"><span class="ic">вслепую</span><h3>Нет непрерывного контроля</h3>
+      <p>Стендовая диагностика — раз в год и субъективна. Между визитами о машине
+        не известно ничего.</p></div>
+    <div class="card"><span class="ic">парк</span><h3>Автопарки теряют время</h3>
+      <p>Простой из-за внезапной поломки дороже планового обслуживания в разы;
+        предсказать некому.</p></div>
+  </div>
+</section>
+
+<!-- РЕШЕНИЕ -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">02</span> Решение</div>
+  <h2>Один прибор — непрерывный «медосмотр» ходовой.</h2>
+  <p class="lead">Коробочка ставится в машину один раз. На ходу она пишет вибрацию и звук,
+    на стоянке дома сама отдаёт данные, а облако считает состояние узлов и предупреждает
+    заранее.</p>
+  <div class="cols">
+    <div class="card"><span class="ic">видит износ</span><h3>Тренд состояния, а не разовый замер</h3>
+      <p>Метрики подвески отслеживаются от поездки к поездке. Отклонение от собственного
+        эталона машины = ранний сигнал износа.</p></div>
+    <div class="card"><span class="ic">бережёт узлы</span><h3>Совет по скорости для ресурса</h3>
+      <p>Система оценивает усталостно-ударную нагрузку на подвеску и подсказывает
+        щадящую скорость на конкретной дороге — про долговечность, не про комфорт.</p></div>
+    <div class="card"><span class="ic">без сервиса</span><h3>Работает на любой машине</h3>
+      <p>Ставится в багажник, не требует дилера и штатной электроники. Обновляется
+        по воздуху.</p></div>
+    <div class="card"><span class="ic">данные</span><h3>Побочный продукт — качество дорог</h3>
+      <p>Те же датчики дают карту ровности покрытия — ценность для парков,
+        страховых и городов.</p></div>
+  </div>
+</section>
+
+<!-- АРХИТЕКТУРА -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">03</span> Как это устроено</div>
+  <h2>От вибрации до вердикта — по воздуху.</h2>
+  <p class="lead">Простая цепочка без ручного труда: записал на ходу → на стоянке сам
+    выгрузил → облако посчитало → на дашборде виден статус машины.</p>
+  <div class="arch">
+    <div class="node"><div class="k">прибор</div><h3>ESP32-S3 + датчики</h3>
+      <p>Акселерометр/гироскоп 1 кГц и микрофон 16 кГц пишут на карту со сжатием
+        без потерь ~2.9×.</p></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="k">связь</div><h3>Wi-Fi, авто-выгрузка</h3>
+      <p>Дома прибор сам заходит в сеть и отдаёт записи. Прошивка обновляется
+        по воздуху (OTA).</p></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="k">облако</div><h3>Анализ + база</h3>
+      <p>Сервер извлекает метрики узлов и складывает историю по каждой машине
+        (PostgreSQL).</p></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="k">клиент</div><h3>Дашборд</h3>
+      <p>Состояние, тренды, тревоги и детальные графики поездки — в браузере,
+        для владельца и парка.</p></div>
+  </div>
+  <p class="note" style="margin-top:24px">На подходе: модуль CAN по воздуху — настоящие
+    данные из машины (обороты, скорость), и внутренний аккумулятор со сном для режима
+    «поставил и забыл».</p>
+</section>
+
+<!-- ДОКАЗАНО -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">04</span> Что уже работает</div>
+  <h2>Не идея на слайде — рабочий прототип на реальном авто.</h2>
+  <p class="lead">Всё ниже проверено на железе и натурных поездках (Mazda CX-5 2013).</p>
+  <div class="stats">
+    <div class="stat"><div class="n">1000<small> Гц</small></div><div class="l">поток вибрации,
+      + звук 16 кГц</div></div>
+    <div class="stat"><div class="n">2.9<small>×</small></div><div class="l">сжатие данных
+      без потерь на борту</div></div>
+    <div class="stat"><div class="n">7<small>σ</small></div><div class="l">сигнал при износе
+      всего 10% — задолго до поломки</div></div>
+    <div class="stat"><div class="n">0<small> касаний</small></div><div class="l">старт, стоп
+      и выгрузка — автоматически</div></div>
+  </div>
+  <ul class="proof">
+    <li><span class="ok">✓</span><div><b>Метрика подвески воспроизводима.</b>
+      <span class="d">Собственный эталон машины 1.34 ± 0.06; разброс между поездками меньше
+      ошибки внутри поездки — по нему ловится износ.</span></div></li>
+    <li><span class="ok">✓</span><div><b>Доза износа считается по каждой поездке.</b>
+      <span class="d">Усталость (rainflow + Майнер) и пиковые удары, включая продольно-боковые
+      толчки в сайлентблоки.</span></div></li>
+    <li><span class="ok">✓</span><div><b>Обороты двигателя — из микрофона; стуки — с подтверждением звуком.</b>
+      <span class="d">Помеха превращается в полезный сигнал; ложные срабатывания отсекаются.</span></div></li>
+    <li><span class="ok">✓</span><div><b>Прошивка на Rust, обновление по Wi-Fi, синхронизация времени.</b>
+      <span class="d">Стабильная запись на карту, авто-переход в домашнюю сеть, дашборд с историей и графиками.</span></div></li>
+  </ul>
+</section>
+
+<!-- КЛЮЧЕВАЯ МЕТРИКА -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">05</span> Ключевая метрика</div>
+  <h2>Износ виден как рост, а не как «вдруг сломалось».</h2>
+  <p class="lead">Каждая машина набирает собственный эталон. Дальше система следит за
+    отклонением: 10% износа — уже уверенные +7σ, тревога срабатывает задолго до стука.</p>
+  <div class="chart-card">
+    <canvas id="baseline" aria-label="График остроты резонанса подвески с эталоном и порогами тревоги"></canvas>
+    <div class="legend">
+      <span><i style="background:var(--good)"></i>эталон ± разброс</span>
+      <span><i style="background:var(--accent)"></i>замеры поездок</span>
+      <span><i style="background:var(--warm)"></i>порог тревоги (+3σ)</span>
+      <span><i style="background:var(--alert)"></i>износ 10% (+7σ) · 20% (+15σ)</span>
+    </div>
+  </div>
+  <p class="note" style="margin-top:20px">Показаны реальные замеры здоровой подвески у эталона
+    и известная чувствительность метрики. Пороги износа — расчётные по разбросу эталона.</p>
+</section>
+
+<!-- ДИФФЕРЕНЦИАЦИЯ -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">06</span> Почему это сильно</div>
+  <h2>Дёшево, универсально и про ресурс.</h2>
+  <div class="cols">
+    <div class="card"><span class="ic">слияние сигналов</span><h3>Вибрация + звук + CAN</h3>
+      <p>Три источника вместо одного: спорный сигнал одного подтверждается другим —
+        меньше ложных тревог, больше узлов под контролем.</p></div>
+    <div class="card"><span class="ic">фокус</span><h3>Долговечность, а не комфорт</h3>
+      <p>Мы считаем усталостную нагрузку на узлы и даём действие — щадящую скорость,
+        а не абстрактный «индекс тряски».</p></div>
+    <div class="card"><span class="ic">себестоимость</span><h3>Массовые компоненты</h3>
+      <p>Ширпотребный МК и датчики, железо — десятки долларов<span class="ph">*</span>.
+        Порог входа на рынок низкий.</p></div>
+    <div class="card"><span class="ic">универсальность</span><h3>Aftermarket на любой авто</h3>
+      <p>Не зависит от марки и штатной телематики. Один прибор — от частника до автопарка.</p></div>
+  </div>
+</section>
+
+<!-- КОНКУРЕНТЫ -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">07</span> Конкуренты</div>
+  <h2>Нишу «износ ходовой, непрерывно и дёшево» никто не закрывает.</h2>
+  <p class="lead">Соседние решения либо про другое (двигатель, комфорт), либо разовые
+    и дорогие, либо привязаны к марке. Мы — единственные во всех колонках сразу.</p>
+  <div class="compare-wrap">
+    <table class="compare">
+      <thead><tr>
+        <th>Решение</th><th>Непрерывно</th><th>Износ&nbsp;ходовой</th>
+        <th>Любой&nbsp;авто</th><th>Совет&nbsp;к&nbsp;действию</th><th>Низкая&nbsp;цена</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>OBD-донглы, страховые трекеры<small>двигатель и стиль езды</small></td>
+          <td class="y">✓</td><td class="n">—</td><td class="y">✓</td>
+          <td class="p">~</td><td class="y">✓</td></tr>
+        <tr><td>Стендовая диагностика у дилера<small>раз в год, субъективно</small></td>
+          <td class="n">—</td><td class="y">✓</td><td class="y">✓</td>
+          <td class="p">~</td><td class="n">—</td></tr>
+        <tr><td>Приложения-акселерометр (телефон)<small>про комфорт, не про узлы</small></td>
+          <td class="p">~</td><td class="p">~</td><td class="y">✓</td>
+          <td class="n">—</td><td class="y">✓</td></tr>
+        <tr><td>Промышленная вибродиагностика<small>станки, не автомобиль</small></td>
+          <td class="y">✓</td><td class="y">✓</td><td class="n">—</td>
+          <td class="y">✓</td><td class="n">—</td></tr>
+        <tr><td>OEM-телематика<small>заводская, привязана к марке</small></td>
+          <td class="y">✓</td><td class="p">~</td><td class="n">—</td>
+          <td class="p">~</td><td class="p">~</td></tr>
+        <tr class="us"><td>Car Vibro-Logger<small>вибрация + звук + CAN</small></td>
+          <td class="y">✓</td><td class="y">✓</td><td class="y">✓</td>
+          <td class="y">✓</td><td class="y">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:20px">Показаны категории решений, а не конкретные бренды.
+    ✓ — есть · ~ — частично · — нет.</p>
+</section>
+
+<!-- РЫНОК -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">08</span> Рынок</div>
+  <h2>Кому продаём и за что платят.</h2>
+  <p class="lead">Предиктивное обслуживание и телематика подключённых машин —
+    многомиллиардные рынки с двузначным ростом<span class="ph">*</span>. Мы заходим
+    с недорогого aftermarket-устройства.</p>
+  <div class="seg">
+    <div class="row"><div class="who">Частные владельцы<small>B2C</small></div>
+      <div class="val">Спокойствие и экономия: узнать об износе до дорогого ремонта,
+        подсказка по скорости берегёт подвеску. Прибор + подписка на дашборд.</div></div>
+    <div class="row"><div class="who">Автопарки, такси, каршеринг<small>B2B</small></div>
+      <div class="val">Меньше внезапных простоев и издержек на ремонт, контроль состояния
+        всего парка, оценка манеры езды. Подписка за машину.</div></div>
+    <div class="row"><div class="who">Города, страховые, дорожники<small>data</small></div>
+      <div class="val">Карта качества дорог как побочный продукт: ровность покрытия
+        по маршрутам — ценные данные на продажу.</div></div>
+  </div>
+</section>
+
+<!-- БИЗНЕС-МОДЕЛЬ -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">09</span> Как зарабатываем</div>
+  <h2>Железо + подписка + данные.</h2>
+  <div class="cols-3">
+    <div class="card"><span class="ic">оборудование</span><h3>Продажа прибора</h3>
+      <p>Разовая выручка с устройства при низкой себестоимости компонентов.</p></div>
+    <div class="card"><span class="ic">SaaS</span><h3>Подписка на дашборд</h3>
+      <p>Ежемесячно за машину: аналитика, тревоги, история, советы. Основной
+        повторяющийся доход, тарифы для частника и парка.</p></div>
+    <div class="card"><span class="ic">данные</span><h3>Дорожная аналитика</h3>
+      <p>Обезличенные карты ровности дорог — B2B/госсектор, второй поток выручки.</p></div>
+  </div>
+  <p class="note" style="margin-top:24px"><span class="ph">*</span> Конкретные цены и юнит-экономику
+    уточняем на пилотах — заложены как параметр, а не как обещание.</p>
+</section>
+
+<!-- ДОРОЖНАЯ КАРТА -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">10</span> Дорожная карта</div>
+  <h2>От прототипа к продукту.</h2>
+  <div class="road">
+    <div class="phase done"><div class="when">сделано<b>прототип</b></div>
+      <div><h3>Рабочее устройство и аналитика</h3>
+        <p>Запись, сжатие, OTA, метрики подвески/износа, дашборд. Проверено на реальном авто.</p></div></div>
+    <div class="phase"><div class="when">сейчас<b>в работе</b></div>
+      <div><h3>CAN по воздуху + питание и сон</h3>
+        <p>Настоящие данные из машины (скорость/обороты) и внутренний аккумулятор
+          с глубоким сном — режим «поставил и забыл».</p></div></div>
+    <div class="phase"><div class="when">далее<b>продукт</b></div>
+      <div><h3>Рекомендация скорости и качество дорог</h3>
+        <p>Предсказание нагрузки на подвеску по скорости, карта ровности, тревоги
+          и обслуживание в дашборде.</p></div></div>
+    <div class="phase"><div class="when">масштаб<b>парк</b></div>
+      <div><h3>Автопарк и серийное железо</h3>
+        <p>Мультиарендность и роли, подготовка к серийному производству и пилоты
+          с парками.</p></div></div>
+  </div>
+</section>
+
+<!-- КОМАНДА -->
+<section class="slide">
+  <div class="eyebrow"><span class="num">11</span> Команда</div>
+  <h2>Весь стек — от прошивки до дашборда — уже собран одним инженером.</h2>
+  <p class="lead">Редкая для железа глубина: один человек довёл продукт от датчика до
+    облака и проверил на реальном авто. Раунд превращает это в команду.</p>
+  <div class="team-lead">
+    <div class="avatar" aria-hidden="true">СА</div>
+    <div class="body">
+      <h3>Снегирев Александр</h3>
+      <div class="role">Основатель · инженер full-stack</div>
+      <p style="color:var(--muted)">Спроектировал и реализовал в одиночку: прошивку на Rust
+        (ESP32-S3, запись 1 кГц + звук, сжатие, OTA), цифровую обработку и метрики диагностики
+        (Python), серверную часть с базой и веб-дашборд. От идеи до работающего прибора на
+        машине.</p>
+      <div class="chips">
+        <span>Embedded / Rust</span><span>DSP · вибро-акустика</span>
+        <span>Backend · PostgreSQL</span><span>Дашборд / веб</span><span>Автодиагностика</span>
+      </div>
+    </div>
+  </div>
+  <div class="cols-3">
+    <div class="card"><span class="ic">наём из раунда</span><h3>Embedded / hardware</h3>
+      <p>Серийная плата, корпус, подготовка к производству.</p></div>
+    <div class="card"><span class="ic">наём из раунда</span><h3>Backend / ML</h3>
+      <p>Облако, масштаб, модели предсказания износа.</p></div>
+    <div class="card"><span class="ic">наём из раунда</span><h3>Продажи / пилоты</h3>
+      <p>Выход на автопарки, первые внедрения и обратная связь.</p></div>
+  </div>
+  <p class="note" style="margin-top:24px">Состав советников — добавить при появлении.</p>
+</section>
+
+<!-- ASK -->
+<section class="slide" style="border-bottom:none">
+  <div class="eyebrow"><span class="num">12</span> Раунд</div>
+  <h2>Что просим и на что.</h2>
+  <div class="ask">
+    <div class="amt"><span class="ph">$ ___</span> на <span class="ph">__</span> месяцев</div>
+    <p class="lead" style="margin-top:14px">Довести проверенный прототип до серийного продукта
+      и первых пилотов с автопарками.</p>
+    <div class="use">
+      <div><div class="p">Железо</div><div class="t">серийная плата, корпус, партия приборов</div></div>
+      <div><div class="p">Облако</div><div class="t">дашборд, инфраструктура, надёжность</div></div>
+      <div><div class="p">Команда</div><div class="t">embedded + backend + продажи</div></div>
+      <div><div class="p">Пилоты</div><div class="t">парки, сбор данных, юнит-экономика</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p class="note">Стадия: рабочий прототип, проверенный на одном автомобиле (Mazda CX-5 2013),
+    команда — основатель-инженер. Значения, помеченные <span class="ph">*</span>, и суммы раунда —
+    целевые/иллюстративные, подлежат уточнению. Технические результаты (метрики, сжатие,
+    чувствительность) получены на реальных данных.</p>
+</footer>
+
+<script>
+(function(){
+  // --- тема ---
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){cur=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+    root.setAttribute('data-theme',cur==='dark'?'light':'dark');
+    draw(); baseline();
+  });
+
+  function css(v){return getComputedStyle(root).getPropertyValue(v).trim();}
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // --- осциллограмма героя ---
+  var wc=document.getElementById('wave'), wctx=wc.getContext('2d'), ph=0;
+  function sizeCanvas(c){var dpr=devicePixelRatio||1,r=c.getBoundingClientRect();
+    c.width=r.width*dpr;c.height=r.height*dpr;var g=c.getContext('2d');
+    g.setTransform(dpr,0,0,dpr,0,0);return {w:r.width,h:r.height};}
+  function draw(){
+    var d=sizeCanvas(wc),w=d.w,h=d.h; wctx.clearRect(0,0,w,h);
+    var mid=h/2, acc=css('--accent'), grid=css('--grid');
+    // сетка
+    wctx.strokeStyle=grid;wctx.lineWidth=1;
+    for(var x=0;x<w;x+=44){wctx.beginPath();wctx.moveTo(x,0);wctx.lineTo(x,h);wctx.stroke();}
+    for(var y=0;y<h;y+=44){wctx.beginPath();wctx.moveTo(0,y);wctx.lineTo(w,y);wctx.stroke();}
+    // трасса: базовая тряска + редкий "удар"
+    wctx.strokeStyle=acc;wctx.lineWidth=2;wctx.beginPath();
+    for(var i=0;i<=w;i++){
+      var t=i/w*Math.PI*8+ph;
+      var base=Math.sin(t)*10+Math.sin(t*2.7)*6+Math.sin(t*5.3)*3;
+      var noise=(Math.sin(i*12.9898+ph*3.1)*43758.5453%1)*6-3;
+      var bump=0, bx=(ph*40)%(w*1.6);
+      var dx=i-((bx)%w); if(Math.abs(dx)<26) bump=Math.exp(-dx*dx/120)*46*Math.sin(dx/3);
+      var yv=mid-(base+noise*0.5+bump)*(h/120);
+      i?wctx.lineTo(i,yv):wctx.moveTo(i,yv);
+    }
+    wctx.stroke();
+    // мягкое свечение под трассой
+    var grad=wctx.createLinearGradient(0,0,0,h);
+    grad.addColorStop(0,'transparent');
+  }
+  function tick(){ph+=0.03;draw();if(!reduce)requestAnimationFrame(tick);}
+
+  // --- график эталона (реальные числа) ---
+  var bc=document.getElementById('baseline');
+  function baseline(){
+    var d=sizeCanvas(bc),W=d.w,H=d.h,g=bc.getContext('2d');g.clearRect(0,0,W,H);
+    var P={l:52,r:18,t:20,b:34};
+    var mean=1.344, sd=0.056;
+    var lo=1.15, hi=mean+15*sd*0.75; // до ~1.9
+    var acc=css('--accent'),good=css('--good'),warm=css('--warm'),alert=css('--alert'),
+        mut=css('--muted'),line=css('--line'),ink=css('--ink');
+    var X=function(i,n){return P.l+(W-P.l-P.r)*(n<2?0.5:i/(n-1));};
+    var Y=function(v){return P.t+(H-P.t-P.b)*(1-(v-lo)/(hi-lo));};
+    // сетка + ось Y
+    g.strokeStyle=line;g.fillStyle=mut;g.font='12px '+css('--font-mono');
+    for(var k=0;k<=5;k++){var v=lo+(hi-lo)*k/5,py=Y(v);
+      g.beginPath();g.moveTo(P.l,py);g.lineTo(W-P.r,py);g.stroke();
+      g.fillText(v.toFixed(2),8,py+4);}
+    // полоса эталона ±sd
+    g.fillStyle=good+'2e';
+    g.fillRect(P.l,Y(mean+sd),W-P.l-P.r,Y(mean-sd)-Y(mean+sd));
+    g.strokeStyle=good;g.setLineDash([6,4]);g.lineWidth=1.5;
+    g.beginPath();g.moveTo(P.l,Y(mean));g.lineTo(W-P.r,Y(mean));g.stroke();
+    // порог тревоги +3σ, износ +7σ / +15σ
+    function hline(v,col,label){g.strokeStyle=col;g.beginPath();g.moveTo(P.l,Y(v));
+      g.lineTo(W-P.r,Y(v));g.stroke();g.fillStyle=col;
+      g.fillText(label,W-P.r-g.measureText(label).width-4,Y(v)-6);}
+    hline(mean+3*sd,warm,'тревога +3σ');
+    hline(mean+7*sd,alert,'износ 10% · +7σ');
+    g.setLineDash([2,4]); hline(mean+15*sd,alert,'20% · +15σ'); g.setLineDash([]);
+    // реальные замеры здоровой подвески (около эталона)
+    var pts=[1.36,1.30,1.34,1.41,1.32,1.35,1.33,1.38];
+    g.strokeStyle=acc;g.lineWidth=2;g.setLineDash([]);g.beginPath();
+    pts.forEach(function(p,i){var x=X(i,pts.length),y=Y(p);i?g.lineTo(x,y):g.moveTo(x,y);});
+    g.stroke();
+    pts.forEach(function(p,i){g.fillStyle=acc;g.beginPath();
+      g.arc(X(i,pts.length),Y(p),4.5,0,7);g.fill();});
+    // подписи осей
+    g.fillStyle=mut;g.font='11px '+css('--font-mono');
+    g.fillText('острота резонанса',P.l,H-10);
+    g.fillText('поездки →',W-P.r-70,H-10);
+  }
+
+  function onResize(){draw();baseline();}
+  addEventListener('resize',onResize);
+  draw();baseline();
+  if(!reduce)requestAnimationFrame(tick);
+})();
+</script>
+
+</body></html>
